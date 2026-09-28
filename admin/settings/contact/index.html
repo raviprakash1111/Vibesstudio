@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact &amp; Social Settings | VIBES STUDIO Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../../../assets/css/vibes-design-system.css">
+</head>
+<body>
+
+  <div id="admin-app-root" data-admin-module="contact_settings">
+    <div style="margin-bottom: var(--space-6);">
+      <h1 class="heading-2" style="margin: 0;">Contact &amp; Social Media Settings</h1>
+      <p style="color: var(--brand-muted); margin-top: 4px;">Update phone lines, WhatsApp numbers, studio location address, and official social media profiles.</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="table-card" style="padding: var(--space-8);">
+      <form id="contact-settings-form">
+        
+        <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-top: 0; margin-bottom: 16px; border-bottom: 1px solid var(--brand-wood); padding-bottom: 8px;">Direct Communication Channels</h3>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="setting-phone">Phone Direct Display *</label>
+            <input type="text" id="setting-phone" class="form-input" placeholder="+91 98765 43210" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="setting-whatsapp">WhatsApp Number (Country Code + 10 Digits) *</label>
+            <input type="text" id="setting-whatsapp" class="form-input" placeholder="919876543210" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label class="form-label" for="setting-email">Public Support Email *</label>
+          <input type="email" id="setting-email" class="form-input" placeholder="info@vibesstudio.com" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+        </div>
+
+        <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-top: 24px; margin-bottom: 16px; border-bottom: 1px solid var(--brand-wood); padding-bottom: 8px;">Studio Physical Location</h3>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label" for="setting-address">Verified Studio Address *</label>
+          <input type="text" id="setting-address" class="form-input" placeholder="Aganampudi, Visakhapatnam, Andhra Pradesh, India" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label class="form-label" for="setting-maps">Google Maps Directions URL</label>
+          <input type="text" id="setting-maps" class="form-input" placeholder="https://maps.google.com/?q=Aganampudi,Visakhapatnam,Andhra+Pradesh" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+        </div>
+
+        <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-top: 24px; margin-bottom: 16px; border-bottom: 1px solid var(--brand-wood); padding-bottom: 8px;">Official Social Profiles</h3>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+          <div class="form-group">
+            <label class="form-label" for="setting-youtube">Official YouTube URL</label>
+            <input type="text" id="setting-youtube" class="form-input" placeholder="https://youtube.com/@vibesstudiovizag" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="setting-instagram">Official Instagram URL</label>
+            <input type="text" id="setting-instagram" class="form-input" placeholder="https://instagram.com" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+        </div>
+
+        <div style="text-align: right; margin-top: 24px;">
+          <button type="submit" class="btn btn-primary btn-lg">SAVE CONTACT SETTINGS</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../../../assets/js/vibes-data-store.js"></script>
+  <script src="../../../assets/js/vibes-admin-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('contact-settings-form');
+      const settings = VibesDataStore.getSettings();
+
+      if (settings) {
+        document.getElementById('setting-phone').value = settings.phone || '';
+        document.getElementById('setting-whatsapp').value = settings.whatsappNumber || '';
+        document.getElementById('setting-email').value = settings.email || '';
+        document.getElementById('setting-address').value = settings.address || '';
+        document.getElementById('setting-maps').value = settings.googleMapsUrl || '';
+        document.getElementById('setting-youtube').value = settings.youtubeUrl || '';
+        document.getElementById('setting-instagram').value = settings.instagramUrl || '';
+      }
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const updated = {
+            phone: document.getElementById('setting-phone').value.trim(),
+            whatsappNumber: document.getElementById('setting-whatsapp').value.trim(),
+            email: document.getElementById('setting-email').value.trim(),
+            address: document.getElementById('setting-address').value.trim(),
+            googleMapsUrl: document.getElementById('setting-maps').value.trim(),
+            youtubeUrl: document.getElementById('setting-youtube').value.trim(),
+            instagramUrl: document.getElementById('setting-instagram').value.trim()
+          };
+
+          VibesDataStore.saveSettings(updated);
+          VibesAdmin.toast("Contact settings updated successfully!");
+        });
+      }
+    });
+  </script>
+</body>
+</html>

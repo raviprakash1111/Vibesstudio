@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage Content Management | VIBES STUDIO Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../../assets/css/vibes-design-system.css">
+</head>
+<body>
+
+  <div id="admin-app-root" data-admin-module="homepage">
+    <div style="margin-bottom: var(--space-6);">
+      <h1 class="heading-2" style="margin: 0;">Homepage Content Editor</h1>
+      <p style="color: var(--brand-muted); margin-top: 4px;">Controlled editing of Hero text, CTA buttons, and feature callouts. Core logo &amp; typography remain permanently locked.</p>
+    </div>
+
+    <!-- Brand Protection Alert Banner -->
+    <div style="background-color: rgba(213, 126, 77, 0.15); border: 1px solid var(--brand-orange); padding: 14px 20px; border-radius: var(--radius-md); margin-bottom: var(--space-8); display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 1.5rem;">🔒</span>
+      <div>
+        <strong style="color: var(--brand-black);">Brand Compliance Enforcement</strong>
+        <div style="font-size: 0.85rem; color: var(--brand-muted);">The VIBES STUDIO logo asset, color palette tokens, and primary brand fonts are locked and protected from modification.</div>
+      </div>
+    </div>
+
+    <!-- Content Form Card -->
+    <div class="table-card" style="padding: var(--space-8);">
+      <form id="homepage-content-form">
+        <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-top: 0; margin-bottom: 16px; border-bottom: 1px solid var(--brand-wood); padding-bottom: 8px;">Hero Section Settings</h3>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label" for="hp-headline">Hero Headline Main Text</label>
+          <input type="text" id="hp-headline" class="form-input" placeholder="FEEL THE WAY YOU MOVE" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label" for="hp-supporting">Hero Supporting Text</label>
+          <textarea id="hp-supporting" class="form-textarea" rows="3" placeholder="Dance. Fitness. Creativity. Experience the VIBES..." required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);"></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label class="form-label" for="hp-image">Hero Background Image Path</label>
+          <input type="text" id="hp-image" class="form-input" placeholder="assets/images/hero-studio-bg.png" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+        </div>
+
+        <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-top: 24px; margin-bottom: 16px; border-bottom: 1px solid var(--brand-wood); padding-bottom: 8px;">Hero Call to Action Buttons</h3>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+          <div class="form-group">
+            <label class="form-label" for="hp-cta1-text">Primary CTA Button Text</label>
+            <input type="text" id="hp-cta1-text" class="form-input" placeholder="BOOK A FREE DEMO" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="hp-cta1-link">Primary CTA Link</label>
+            <input type="text" id="hp-cta1-link" class="form-input" placeholder="#contact" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+          <div class="form-group">
+            <label class="form-label" for="hp-cta2-text">Secondary CTA Button Text</label>
+            <input type="text" id="hp-cta2-text" class="form-input" placeholder="EXPLORE CLASSES" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="hp-cta2-link">Secondary CTA Link</label>
+            <input type="text" id="hp-cta2-link" class="form-input" placeholder="#classes" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+        </div>
+
+        <div style="text-align: right; margin-top: 24px;">
+          <button type="submit" class="btn btn-primary btn-lg">SAVE HOMEPAGE SETTINGS</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../../assets/js/vibes-data-store.js"></script>
+  <script src="../../assets/js/vibes-admin-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('homepage-content-form');
+      const hp = VibesDataStore.getHomepageContent();
+
+      if (hp) {
+        document.getElementById('hp-headline').value = hp.heroHeadline || 'FEEL THE WAY YOU MOVE';
+        document.getElementById('hp-supporting').value = hp.heroSupportingText || '';
+        document.getElementById('hp-image').value = hp.heroImage || '';
+        document.getElementById('hp-cta1-text').value = hp.primaryCtaText || '';
+        document.getElementById('hp-cta1-link').value = hp.primaryCtaLink || '';
+        document.getElementById('hp-cta2-text').value = hp.secondaryCtaText || '';
+        document.getElementById('hp-cta2-link').value = hp.secondaryCtaLink || '';
+      }
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const updated = {
+            heroHeadline: document.getElementById('hp-headline').value.trim(),
+            heroSupportingText: document.getElementById('hp-supporting').value.trim(),
+            heroImage: document.getElementById('hp-image').value.trim(),
+            primaryCtaText: document.getElementById('hp-cta1-text').value.trim(),
+            primaryCtaLink: document.getElementById('hp-cta1-link').value.trim(),
+            secondaryCtaText: document.getElementById('hp-cta2-text').value.trim(),
+            secondaryCtaLink: document.getElementById('hp-cta2-link').value.trim()
+          };
+
+          VibesDataStore.saveHomepageContent(updated);
+          VibesAdmin.toast("Homepage content updated successfully!");
+        });
+      }
+    });
+  </script>
+</body>
+</html>

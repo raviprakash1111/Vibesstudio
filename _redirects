@@ -1,0 +1,7 @@
+# Netlify Clean URL redirects
+/admin/* / 404
+/login/* / 404
+/dashboard/* / 404
+/draft/* / 404
+/test/* / 404
+/dev/* / 404

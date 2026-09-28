@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery Management | VIBES STUDIO Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../../assets/css/vibes-design-system.css">
+</head>
+<body>
+
+  <div id="admin-app-root" data-admin-module="gallery">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h1 class="heading-2" style="margin: 0;">Gallery &amp; Media Management</h1>
+        <p style="color: var(--brand-muted); margin-top: 4px;">Upload studio photos, add YouTube showcase videos, and set featured gallery items.</p>
+      </div>
+      <button id="btn-add-gallery" class="btn btn-primary">+ Add New Media</button>
+    </div>
+
+    <!-- Table Card -->
+    <div class="table-card">
+      <div class="table-header-bar">
+        <h3 class="table-title">Media Items List</h3>
+        <div style="font-size: 0.85rem; color: var(--brand-muted);" id="gallery-count-label">0 Media Items Total</div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Preview</th>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Category</th>
+              <th>Featured</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="gallery-table-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Add/Edit Gallery Modal -->
+    <div class="admin-modal-backdrop" id="gallery-modal" style="display: none;">
+      <div class="admin-modal-box">
+        <h3 class="modal-title" id="gallery-modal-title">Add New Media</h3>
+        <form id="gallery-form">
+          <input type="hidden" id="gal-id">
+          
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="gal-title">Title *</label>
+            <input type="text" id="gal-title" class="form-input" placeholder="e.g. Junior Dance Training Session" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="gal-type">Media Type *</label>
+              <select id="gal-type" class="form-select" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="Image">Image</option>
+                <option value="Video">YouTube Video</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="gal-category">Category *</label>
+              <select id="gal-category" class="form-select" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="Dance">Dance</option>
+                <option value="Kids">Kids</option>
+                <option value="Zumba">Zumba</option>
+                <option value="Events">Events</option>
+                <option value="Choreography">Choreography</option>
+                <option value="Workshops">Workshops</option>
+                <option value="Studio">Studio</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="gal-url">Image / Video URL *</label>
+            <input type="text" id="gal-url" class="form-input" placeholder="assets/images/class-kids-dance.png or YouTube Link" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="gal-desc">Description</label>
+            <input type="text" id="gal-desc" class="form-input" placeholder="Brief caption..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="gal-order">Order</label>
+              <input type="number" id="gal-order" class="form-input" value="1" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="gal-featured">Featured</label>
+              <select id="gal-featured" class="form-select" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="false">No</option>
+                <option value="true">Yes (Hero Showcase)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="gal-active">Status</label>
+              <select id="gal-active" class="form-select" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-gallery">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Media</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/vibes-data-store.js"></script>
+  <script src="../../assets/js/vibes-admin-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('gallery-modal');
+      const form = document.getElementById('gallery-form');
+      const tbody = document.getElementById('gallery-table-body');
+      const addBtn = document.getElementById('btn-add-gallery');
+      const cancelBtn = document.getElementById('btn-cancel-gallery');
+
+      function renderGallery() {
+        const gallery = VibesDataStore.getGallery().sort((a, b) => (a.sortOrder || 1) - (b.sortOrder || 1));
+        document.getElementById('gallery-count-label').textContent = `${gallery.length} Media Items Total`;
+
+        if (gallery.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding: 20px;">No gallery media items.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = gallery.map(g => `
+          <tr>
+            <td><strong>#${g.sortOrder || 1}</strong></td>
+            <td>
+              <img src="${g.url.startsWith('http') || g.url.startsWith('assets') ? '../../' + g.url.replace(/^\/+/, '') : g.url}" alt="${g.title}" style="height: 45px; width: 65px; object-fit: cover; border-radius: 4px; border: 1px solid var(--brand-wood);" onerror="this.src='../../assets/brand/vibes-studio-logo-full.png';">
+            </td>
+            <td>
+              <div style="font-weight: 700; color: var(--brand-black);">${g.title}</div>
+              <div style="font-size: 0.8rem; color: var(--brand-muted);">${g.description || ''}</div>
+            </td>
+            <td><span class="badge-status badge-new">${g.mediaType}</span></td>
+            <td><span class="badge-status badge-few">${g.category}</span></td>
+            <td>${g.featured ? '⭐ Featured' : 'Normal'}</td>
+            <td><span class="badge-status badge-${g.isActive ? 'active' : 'inactive'}">${g.isActive ? 'Active' : 'Inactive'}</span></td>
+            <td>
+              <button class="btn-action-icon" onclick="editGallery('${g.id}')" title="Edit Media">✏️ Edit</button>
+              <button class="btn-action-icon" onclick="deleteGalleryConfirm('${g.id}', '${g.title}')" title="Delete Media">🗑️</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      window.editGallery = function(id) {
+        const item = VibesDataStore.getGallery().find(g => g.id === id);
+        if (!item) return;
+        document.getElementById('gallery-modal-title').textContent = "Edit Media";
+        document.getElementById('gal-id').value = item.id;
+        document.getElementById('gal-title').value = item.title;
+        document.getElementById('gal-type').value = item.mediaType;
+        document.getElementById('gal-category').value = item.category;
+        document.getElementById('gal-url').value = item.url;
+        document.getElementById('gal-desc').value = item.description || '';
+        document.getElementById('gal-order').value = item.sortOrder || 1;
+        document.getElementById('gal-featured').value = item.featured ? "true" : "false";
+        document.getElementById('gal-active').value = item.isActive ? "true" : "false";
+        modal.style.display = 'flex';
+      };
+
+      window.deleteGalleryConfirm = function(id, title) {
+        VibesAdmin.confirmDelete(
+          "Delete Media Item",
+          `Are you sure you want to delete "${title}"? This action cannot be undone.`,
+          () => {
+            VibesDataStore.deleteGalleryItem(id);
+            VibesAdmin.toast("Media deleted successfully!");
+            renderGallery();
+          }
+        );
+      };
+
+      if (addBtn) {
+        addBtn.addEventListener('click', () => {
+          form.reset();
+          document.getElementById('gal-id').value = '';
+          document.getElementById('gallery-modal-title').textContent = "Add New Media";
+          modal.style.display = 'flex';
+        });
+      }
+
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+      }
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const itemData = {
+            id: document.getElementById('gal-id').value,
+            title: document.getElementById('gal-title').value.trim(),
+            mediaType: document.getElementById('gal-type').value,
+            category: document.getElementById('gal-category').value,
+            url: document.getElementById('gal-url').value.trim(),
+            description: document.getElementById('gal-desc').value.trim(),
+            sortOrder: parseInt(document.getElementById('gal-order').value) || 1,
+            featured: document.getElementById('gal-featured').value === "true",
+            isActive: document.getElementById('gal-active').value === "true",
+            date: new Date().toISOString().split('T')[0]
+          };
+
+          VibesDataStore.saveGalleryItem(itemData);
+          VibesAdmin.toast("Media saved successfully!");
+          modal.style.display = 'none';
+          renderGallery();
+        });
+      }
+
+      renderGallery();
+    });
+  </script>
+</body>
+</html>

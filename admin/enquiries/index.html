@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Enquiries Inbox | VIBES STUDIO Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../../assets/css/vibes-design-system.css">
+</head>
+<body>
+
+  <div id="admin-app-root" data-admin-module="enquiries">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h1 class="heading-2" style="margin: 0;">Customer Enquiries Inbox</h1>
+        <p style="color: var(--brand-muted); margin-top: 4px;">Track lead enquiries submitted via public contact forms and WhatsApp buttons.</p>
+      </div>
+    </div>
+
+    <!-- Status Filters -->
+    <div class="admin-filter-bar" style="margin-bottom: var(--space-6);">
+      <button class="filter-tab active" data-filter="ALL">ALL ENQUIRIES</button>
+      <button class="filter-tab" data-filter="NEW">NEW LEADS</button>
+      <button class="filter-tab" data-filter="CONTACTED">CONTACTED</button>
+      <button class="filter-tab" data-filter="FOLLOW-UP">FOLLOW-UP</button>
+      <button class="filter-tab" data-filter="CONVERTED">CONVERTED</button>
+      <button class="filter-tab" data-filter="CLOSED">CLOSED</button>
+    </div>
+
+    <!-- Table Card -->
+    <div class="table-card">
+      <div class="table-header-bar">
+        <h3 class="table-title">Enquiry Submissions</h3>
+        <div style="font-size: 0.85rem; color: var(--brand-muted);" id="enq-count-label">0 Enquiries Total</div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Category</th>
+              <th>Batch / Service</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="enquiries-table-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- View / Update Enquiry Modal -->
+    <div class="admin-modal-backdrop" id="enquiry-modal" style="display: none;">
+      <div class="admin-modal-box">
+        <h3 class="modal-title">Enquiry Details</h3>
+        <div id="enq-detail-content" style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+          <!-- Content -->
+        </div>
+
+        <form id="enquiry-status-form">
+          <input type="hidden" id="enq-modal-id">
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="enq-status-select">Update Status</label>
+            <select id="enq-status-select" class="form-select" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+              <option value="NEW">NEW</option>
+              <option value="CONTACTED">CONTACTED</option>
+              <option value="FOLLOW-UP">FOLLOW-UP</option>
+              <option value="CONVERTED">CONVERTED</option>
+              <option value="CLOSED">CLOSED</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="enq-note-text">Internal Admin Note</label>
+            <textarea id="enq-note-text" class="form-textarea" rows="3" placeholder="Add internal note regarding follow-up..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);"></textarea>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-enquiry">Close</button>
+            <button type="submit" class="btn btn-primary">Update Status &amp; Note</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../../assets/js/vibes-data-store.js"></script>
+  <script src="../../assets/js/vibes-admin-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tbody = document.getElementById('enquiries-table-body');
+      const modal = document.getElementById('enquiry-modal');
+      const form = document.getElementById('enquiry-status-form');
+      const cancelBtn = document.getElementById('btn-cancel-enquiry');
+      const filterTabs = document.querySelectorAll('.filter-tab');
+
+      let currentFilter = 'ALL';
+
+      function renderEnquiries() {
+        let list = VibesDataStore.getEnquiries();
+        if (currentFilter !== 'ALL') {
+          list = list.filter(e => e.status === currentFilter);
+        }
+
+        document.getElementById('enq-count-label').textContent = `${list.length} Enquiries (${currentFilter})`;
+
+        if (list.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px;">No enquiries found for filter: ${currentFilter}.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = list.map(e => `
+          <tr>
+            <td style="font-size: 0.85rem; white-space: nowrap;">${e.date}</td>
+            <td><strong>${e.name}</strong></td>
+            <td>
+              <a href="tel:${e.phone}" style="color: var(--brand-black); text-decoration: underline;">${e.phone}</a>
+              <a href="https://wa.me/91${e.phone}" target="_blank" style="margin-left: 6px; text-decoration: none;" title="Chat on WhatsApp">💬</a>
+            </td>
+            <td><span class="badge-status badge-few">${e.interestedIn}</span></td>
+            <td style="font-size: 0.85rem;">${e.batchService || 'General'}</td>
+            <td><span class="badge-status badge-${e.status.toLowerCase().replace('-', '')}">${e.status}</span></td>
+            <td>
+              <button class="btn-action-icon" onclick="viewEnquiry('${e.id}')" title="View & Update Status">👁️ View</button>
+              <button class="btn-action-icon" onclick="deleteEnquiryConfirm('${e.id}', '${e.name}')" title="Delete Enquiry">🗑️</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      window.viewEnquiry = function(id) {
+        const enq = VibesDataStore.getEnquiries().find(e => e.id === id);
+        if (!enq) return;
+
+        document.getElementById('enq-modal-id').value = enq.id;
+        document.getElementById('enq-status-select').value = enq.status;
+        document.getElementById('enq-note-text').value = enq.note || '';
+
+        document.getElementById('enq-detail-content').innerHTML = `
+          <div style="background: var(--brand-cream); padding: 14px; border-radius: 8px; border: 1px solid var(--brand-wood);">
+            <p style="margin: 0 0 6px;"><strong>Name:</strong> ${enq.name}</p>
+            <p style="margin: 0 0 6px;"><strong>Phone:</strong> ${enq.phone}</p>
+            <p style="margin: 0 0 6px;"><strong>Interested In:</strong> ${enq.interestedIn}</p>
+            <p style="margin: 0 0 6px;"><strong>Batch/Service:</strong> ${enq.batchService || 'N/A'}</p>
+            <p style="margin: 0 0 6px;"><strong>Preferred Time/Date:</strong> ${enq.preferredTime || 'N/A'}</p>
+            <p style="margin: 0 0 6px;"><strong>Message:</strong> ${enq.message || 'No additional details provided.'}</p>
+            <p style="margin: 0;"><strong>Received Date:</strong> ${enq.date}</p>
+          </div>
+        `;
+
+        modal.style.display = 'flex';
+      };
+
+      window.deleteEnquiryConfirm = function(id, name) {
+        VibesAdmin.confirmDelete(
+          "Delete Enquiry",
+          `Are you sure you want to delete enquiry from "${name}"? This action cannot be undone.`,
+          () => {
+            VibesDataStore.deleteEnquiry(id);
+            VibesAdmin.toast("Enquiry deleted!");
+            renderEnquiries();
+          }
+        );
+      };
+
+      filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          filterTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentFilter = tab.getAttribute('data-filter');
+          renderEnquiries();
+        });
+      });
+
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+      }
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const id = document.getElementById('enq-modal-id').value;
+          const status = document.getElementById('enq-status-select').value;
+          const note = document.getElementById('enq-note-text').value.trim();
+
+          VibesDataStore.updateEnquiryStatus(id, status, note);
+          VibesAdmin.toast("Enquiry status updated!");
+          modal.style.display = 'none';
+          renderEnquiries();
+        });
+      }
+
+      renderEnquiries();
+    });
+  </script>
+</body>
+</html>

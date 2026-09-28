@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | VIBES STUDIO Control Panel</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../../assets/css/vibes-design-system.css">
+  <style>
+    body {
+      background-color: var(--brand-dark-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: var(--space-4);
+    }
+    .admin-login-card {
+      background-color: var(--brand-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      max-width: 440px;
+      width: 100%;
+      padding: var(--space-8);
+      border: 1px solid var(--brand-wood);
+    }
+    .login-brand-header {
+      text-align: center;
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-6);
+      border-bottom: 1px solid var(--brand-wood);
+    }
+    .login-brand-logo {
+      height: 65px;
+      width: auto;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      margin-bottom: var(--space-3);
+    }
+    .login-title {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      color: var(--brand-black);
+      margin: 0;
+    }
+    .login-sub {
+      font-size: 0.85rem;
+      color: var(--brand-muted);
+      margin-top: 4px;
+    }
+    .login-alert-error {
+      background-color: rgba(211, 47, 47, 0.1);
+      border: 1px solid #D32F2F;
+      color: #D32F2F;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: var(--space-4);
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-login-card">
+    <div class="login-brand-header">
+      <img src="../../assets/brand/vibes-studio-logo-full.png" alt="VIBES STUDIO Logo" class="login-brand-logo">
+      <h1 class="login-title">ADMIN CONTROL PANEL</h1>
+      <p class="login-sub">Authorized VIBES STUDIO Content Management</p>
+    </div>
+
+    <div class="login-alert-error" id="login-error-msg">
+      Invalid email or password. Please try again.
+    </div>
+
+    <form id="admin-login-form">
+      <div class="form-group" style="margin-bottom: var(--space-4);">
+        <label for="login-email" class="form-label">Admin Email</label>
+        <input type="email" id="login-email" class="form-input" placeholder="admin@vibesstudio.com" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+      </div>
+
+      <div class="form-group" style="margin-bottom: var(--space-6);">
+        <label for="login-password" class="form-label">Password</label>
+        <input type="password" id="login-password" class="form-input" placeholder="••••••••••••" required style="width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+        LOG IN TO ADMIN PANEL
+      </button>
+    </form>
+
+    <div style="margin-top: var(--space-6); text-align: center; font-size: 0.8rem; color: var(--brand-muted); border-top: 1px dashed var(--brand-wood); padding-top: var(--space-4);">
+      <strong>Default Admin Credentials:</strong><br>
+      Email: <code>admin@vibesstudio.com</code><br>
+      Password: <code>VibesAdmin2026!</code>
+    </div>
+  </div>
+
+  <script src="../../assets/js/vibes-data-store.js"></script>
+  <script src="../../assets/js/vibes-admin-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('admin-login-form');
+      const errorMsg = document.getElementById('login-error-msg');
+
+      if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const email = document.getElementById('login-email').value.trim();
+          const password = document.getElementById('login-password').value.trim();
+
+          const result = VibesDataStore.login(email, password);
+
+          if (result.success) {
+            window.location.href = '../';
+          } else {
+            errorMsg.style.display = 'block';
+            errorMsg.textContent = result.message || "Invalid authentication credentials.";
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

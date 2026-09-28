@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO Management | VIBES STUDIO Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../../assets/css/vibes-design-system.css">
+</head>
+<body>
+
+  <div id="admin-app-root" data-admin-module="seo">
+    <div style="margin-bottom: var(--space-6);">
+      <h1 class="heading-2" style="margin: 0;">SEO &amp; Social Metadata Settings</h1>
+      <p style="color: var(--brand-muted); margin-top: 4px;">Manage Google Search titles, meta descriptions, and social preview metadata for public pages.</p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="table-card" style="padding: var(--space-8);">
+      <form id="seo-settings-form">
+        
+        <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-top: 0; margin-bottom: 16px; border-bottom: 1px solid var(--brand-wood); padding-bottom: 8px;">Homepage Search Metadata</h3>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label" for="seo-hp-title">Homepage SEO Title *</label>
+          <input type="text" id="seo-hp-title" class="form-input" placeholder="VIBES STUDIO | Dance, Zumba &amp; Choreography in Aganampudi, Vizag" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label class="form-label" for="seo-hp-desc">Homepage Meta Description *</label>
+          <textarea id="seo-hp-desc" class="form-textarea" rows="2" placeholder="VIBES STUDIO in Aganampudi, Visakhapatnam offers dance classes..." required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);"></textarea>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+          <div class="form-group">
+            <label class="form-label" for="seo-og-title">Open Graph Social Title</label>
+            <input type="text" id="seo-og-title" class="form-input" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="seo-og-img">Social Preview Image Path</label>
+            <input type="text" id="seo-og-img" class="form-input" placeholder="assets/images/hero-studio-bg.png" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+        </div>
+
+        <h3 style="font-family: var(--font-heading); font-size: 1.15rem; margin-top: 24px; margin-bottom: 16px; border-bottom: 1px solid var(--brand-wood); padding-bottom: 8px;">Subpage Search Metadata</h3>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="seo-cls-title">Classes Page Title</label>
+            <input type="text" id="seo-cls-title" class="form-input" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="seo-cls-desc">Classes Meta Description</label>
+            <input type="text" id="seo-cls-desc" class="form-input" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+          <div class="form-group">
+            <label class="form-label" for="seo-ch-title">Choreography Page Title</label>
+            <input type="text" id="seo-ch-title" class="form-input" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="seo-ch-desc">Choreography Meta Description</label>
+            <input type="text" id="seo-ch-desc" class="form-input" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+          <div class="form-group">
+            <label class="form-label" for="seo-ab-title">About Page Title</label>
+            <input type="text" id="seo-ab-title" class="form-input" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="seo-cnt-title">Contact Page Title</label>
+            <input type="text" id="seo-cnt-title" class="form-input" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+        </div>
+
+        <div style="text-align: right; margin-top: 24px;">
+          <button type="submit" class="btn btn-primary btn-lg">SAVE SEO METADATA</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../../assets/js/vibes-data-store.js"></script>
+  <script src="../../assets/js/vibes-admin-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('seo-settings-form');
+      const seo = VibesDataStore.getSeoSettings();
+
+      if (seo) {
+        document.getElementById('seo-hp-title').value = seo.homepageTitle || '';
+        document.getElementById('seo-hp-desc').value = seo.homepageMetaDesc || '';
+        document.getElementById('seo-og-title').value = seo.homepageOgTitle || '';
+        document.getElementById('seo-og-img').value = seo.homepageOgImage || '';
+        document.getElementById('seo-cls-title').value = seo.classesTitle || '';
+        document.getElementById('seo-cls-desc').value = seo.classesMetaDesc || '';
+        document.getElementById('seo-ch-title').value = seo.choreographyTitle || '';
+        document.getElementById('seo-ch-desc').value = seo.choreographyMetaDesc || '';
+        document.getElementById('seo-ab-title').value = seo.aboutTitle || '';
+        document.getElementById('seo-cnt-title').value = seo.contactTitle || '';
+      }
+
+      function sanitizeText(str) {
+        return str.replace(/<[^>]*>?/gm, '');
+      }
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const updated = {
+            homepageTitle: sanitizeText(document.getElementById('seo-hp-title').value.trim()),
+            homepageMetaDesc: sanitizeText(document.getElementById('seo-hp-desc').value.trim()),
+            homepageOgTitle: sanitizeText(document.getElementById('seo-og-title').value.trim()),
+            homepageOgImage: sanitizeText(document.getElementById('seo-og-img').value.trim()),
+            classesTitle: sanitizeText(document.getElementById('seo-cls-title').value.trim()),
+            classesMetaDesc: sanitizeText(document.getElementById('seo-cls-desc').value.trim()),
+            choreographyTitle: sanitizeText(document.getElementById('seo-ch-title').value.trim()),
+            choreographyMetaDesc: sanitizeText(document.getElementById('seo-ch-desc').value.trim()),
+            aboutTitle: sanitizeText(document.getElementById('seo-ab-title').value.trim()),
+            contactTitle: sanitizeText(document.getElementById('seo-cnt-title').value.trim())
+          };
+
+          VibesDataStore.saveSeoSettings(updated);
+          VibesAdmin.toast("SEO metadata updated successfully!");
+        });
+      }
+    });
+  </script>
+</body>
+</html>

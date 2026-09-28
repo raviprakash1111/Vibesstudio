@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testimonials Management | VIBES STUDIO Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../../assets/css/vibes-design-system.css">
+</head>
+<body>
+
+  <div id="admin-app-root" data-admin-module="testimonials">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h1 class="heading-2" style="margin: 0;">Testimonials Management</h1>
+        <p style="color: var(--brand-muted); margin-top: 4px;">Approve, publish, or edit verified student, parent, and client reviews.</p>
+      </div>
+      <button id="btn-add-tst" class="btn btn-primary">+ Add New Testimonial</button>
+    </div>
+
+    <!-- Table Card -->
+    <div class="table-card">
+      <div class="table-header-bar">
+        <h3 class="table-title">Community Reviews List</h3>
+        <div style="font-size: 0.85rem; color: var(--brand-muted);" id="tst-count-label">0 Reviews Total</div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Author</th>
+              <th>Relationship</th>
+              <th>Class / Service</th>
+              <th>Review Snippet</th>
+              <th>Published State</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tst-table-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Add/Edit Testimonial Modal -->
+    <div class="admin-modal-backdrop" id="tst-modal" style="display: none;">
+      <div class="admin-modal-box">
+        <h3 class="modal-title" id="tst-modal-title">Add New Testimonial</h3>
+        <form id="tst-form">
+          <input type="hidden" id="tst-id">
+          
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="tst-author">Author Name *</label>
+            <input type="text" id="tst-author" class="form-input" placeholder="e.g. Lakshmi Narayana" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="tst-relationship">Relationship *</label>
+              <select id="tst-relationship" class="form-select" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="Student">Student</option>
+                <option value="Parent">Parent</option>
+                <option value="Client">Client</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="tst-category">Class / Service Category</label>
+              <input type="text" id="tst-category" class="form-input" placeholder="e.g. Kids Dance" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="tst-quote">Testimonial Quote *</label>
+            <textarea id="tst-quote" class="form-textarea" rows="4" placeholder="Enter verified review text..." required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);"></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="tst-order">Display Order</label>
+              <input type="number" id="tst-order" class="form-input" value="1" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="tst-active">Approve &amp; Publish</label>
+              <select id="tst-active" class="form-select" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="true">Approved &amp; Published</option>
+                <option value="false">Pending / Hidden</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-tst">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Testimonial</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/vibes-data-store.js"></script>
+  <script src="../../assets/js/vibes-admin-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('tst-modal');
+      const form = document.getElementById('tst-form');
+      const tbody = document.getElementById('tst-table-body');
+      const addBtn = document.getElementById('btn-add-tst');
+      const cancelBtn = document.getElementById('btn-cancel-tst');
+
+      function renderTestimonials() {
+        const testimonials = VibesDataStore.getTestimonials().sort((a, b) => (a.sortOrder || 1) - (b.sortOrder || 1));
+        document.getElementById('tst-count-label').textContent = `${testimonials.length} Testimonials Total`;
+
+        if (testimonials.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px;">No testimonials registered.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = testimonials.map(t => `
+          <tr>
+            <td><strong>#${t.sortOrder || 1}</strong></td>
+            <td><strong>${t.author}</strong></td>
+            <td><span class="badge-status badge-new">${t.relationship || 'Parent'}</span></td>
+            <td>${t.category}</td>
+            <td style="max-width: 300px; font-size: 0.85rem;">“${t.testimonial ? t.testimonial.substring(0, 70) : (t.quote ? t.quote.substring(0, 70) : '')}...”</td>
+            <td><span class="badge-status badge-${t.active ? 'active' : 'inactive'}">${t.active ? 'Approved' : 'Hidden'}</span></td>
+            <td>
+              <button class="btn-action-icon" onclick="editTestimonial('${t.id}')" title="Edit Testimonial">✏️ Edit</button>
+              <button class="btn-action-icon" onclick="deleteTestimonialConfirm('${t.id}', '${t.author}')" title="Delete Testimonial">🗑️</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      window.editTestimonial = function(id) {
+        const tst = VibesDataStore.getTestimonials().find(t => t.id === id);
+        if (!tst) return;
+        document.getElementById('tst-modal-title').textContent = "Edit Testimonial";
+        document.getElementById('tst-id').value = tst.id;
+        document.getElementById('tst-author').value = tst.author;
+        document.getElementById('tst-relationship').value = tst.relationship || 'Parent';
+        document.getElementById('tst-category').value = tst.category || '';
+        document.getElementById('tst-quote').value = tst.testimonial || tst.quote || '';
+        document.getElementById('tst-order').value = tst.sortOrder || 1;
+        document.getElementById('tst-active').value = tst.active ? "true" : "false";
+        modal.style.display = 'flex';
+      };
+
+      window.deleteTestimonialConfirm = function(id, author) {
+        VibesAdmin.confirmDelete(
+          "Delete Testimonial",
+          `Are you sure you want to delete review by "${author}"? This action cannot be undone.`,
+          () => {
+            VibesDataStore.deleteTestimonial(id);
+            VibesAdmin.toast("Testimonial deleted successfully!");
+            renderTestimonials();
+          }
+        );
+      };
+
+      if (addBtn) {
+        addBtn.addEventListener('click', () => {
+          form.reset();
+          document.getElementById('tst-id').value = '';
+          document.getElementById('tst-modal-title').textContent = "Add New Testimonial";
+          modal.style.display = 'flex';
+        });
+      }
+
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+      }
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const tstData = {
+            id: document.getElementById('tst-id').value,
+            author: document.getElementById('tst-author').value.trim(),
+            relationship: document.getElementById('tst-relationship').value,
+            category: document.getElementById('tst-category').value.trim(),
+            quote: document.getElementById('tst-quote').value.trim(),
+            testimonial: document.getElementById('tst-quote').value.trim(),
+            role: `${document.getElementById('tst-relationship').value} Review`,
+            sortOrder: parseInt(document.getElementById('tst-order').value) || 1,
+            active: document.getElementById('tst-active').value === "true",
+            avatar: document.getElementById('tst-author').value.charAt(0).toUpperCase() || 'V'
+          };
+
+          VibesDataStore.saveTestimonial(tstData);
+          VibesAdmin.toast("Testimonial saved successfully!");
+          modal.style.display = 'none';
+          renderTestimonials();
+        });
+      }
+
+      renderTestimonials();
+    });
+  </script>
+</body>
+</html>

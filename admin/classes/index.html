@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class Management | VIBES STUDIO Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../../assets/css/vibes-design-system.css">
+</head>
+<body>
+
+  <div id="admin-app-root" data-admin-module="classes">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h1 class="heading-2" style="margin: 0;">Class Management</h1>
+        <p style="color: var(--brand-muted); margin-top: 4px;">Add, edit, or configure studio class offerings.</p>
+      </div>
+      <button id="btn-add-class" class="btn btn-primary">+ Add New Class</button>
+    </div>
+
+    <!-- Table Card -->
+    <div class="table-card">
+      <div class="table-header-bar">
+        <h3 class="table-title">Studio Classes List</h3>
+        <div style="font-size: 0.85rem; color: var(--brand-muted);" id="class-count-label">0 Classes Total</div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Class Name</th>
+              <th>Category</th>
+              <th>Age Group</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="classes-table-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Add/Edit Class Modal -->
+    <div class="admin-modal-backdrop" id="class-modal" style="display: none;">
+      <div class="admin-modal-box">
+        <h3 class="modal-title" id="class-modal-title">Add New Class</h3>
+        <form id="class-form">
+          <input type="hidden" id="class-id">
+          
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="cls-name">Class Name *</label>
+            <input type="text" id="cls-name" class="form-input" placeholder="e.g. Kids Creative Dance" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="cls-category">Category *</label>
+            <select id="cls-category" class="form-select" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+              <option value="Kids Dance">Kids Dance</option>
+              <option value="Senior / Kids Dance">Senior / Kids Dance</option>
+              <option value="Adult Dance">Adult Dance</option>
+              <option value="Zumba Fitness">Zumba Fitness</option>
+              <option value="Art Classes">Art Classes</option>
+              <option value="Tuitions">Tuitions</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="cls-age">Age Group</label>
+            <input type="text" id="cls-age" class="form-input" placeholder="e.g. Age 4 – 10 Yrs" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="cls-image">Image URL / Asset Path</label>
+            <input type="text" id="cls-image" class="form-input" placeholder="assets/images/class-kids-dance.png" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="cls-desc">Description</label>
+            <textarea id="cls-desc" class="form-textarea" rows="3" placeholder="Brief description of the class..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);"></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="cls-order">Display Order</label>
+              <input type="number" id="cls-order" class="form-input" value="1" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cls-status">Status</label>
+              <select id="cls-status" class="form-select" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="INACTIVE">INACTIVE</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-class">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Class</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../../assets/js/vibes-data-store.js"></script>
+  <script src="../../assets/js/vibes-admin-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('class-modal');
+      const form = document.getElementById('class-form');
+      const tbody = document.getElementById('classes-table-body');
+      const addBtn = document.getElementById('btn-add-class');
+      const cancelBtn = document.getElementById('btn-cancel-class');
+
+      function renderClasses() {
+        const classes = VibesDataStore.getClasses().sort((a, b) => a.sortOrder - b.sortOrder);
+        document.getElementById('class-count-label').textContent = `${classes.length} Classes Total`;
+
+        if (classes.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No classes created yet.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = classes.map(c => `
+          <tr>
+            <td><strong>#${c.sortOrder}</strong></td>
+            <td>
+              <div style="font-weight: 700; color: var(--brand-black);">${c.name}</div>
+              <div style="font-size: 0.8rem; color: var(--brand-muted);">${c.description.substring(0, 50)}...</div>
+            </td>
+            <td><span class="badge-status badge-few">${c.category}</span></td>
+            <td>${c.ageGroup}</td>
+            <td><span class="badge-status badge-${c.status === 'ACTIVE' ? 'active' : 'inactive'}">${c.status}</span></td>
+            <td>
+              <button class="btn-action-icon" onclick="editClass('${c.id}')" title="Edit Class">✏️ Edit</button>
+              <button class="btn-action-icon" onclick="deleteClassConfirm('${c.id}', '${c.name}')" title="Delete Class">🗑️</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      window.editClass = function(id) {
+        const cls = VibesDataStore.getClasses().find(c => c.id === id);
+        if (!cls) return;
+        document.getElementById('class-modal-title').textContent = "Edit Class";
+        document.getElementById('class-id').value = cls.id;
+        document.getElementById('cls-name').value = cls.name;
+        document.getElementById('cls-category').value = cls.category;
+        document.getElementById('cls-age').value = cls.ageGroup;
+        document.getElementById('cls-image').value = cls.image;
+        document.getElementById('cls-desc').value = cls.description;
+        document.getElementById('cls-order').value = cls.sortOrder;
+        document.getElementById('cls-status').value = cls.status;
+        modal.style.display = 'flex';
+      };
+
+      window.deleteClassConfirm = function(id, name) {
+        VibesAdmin.confirmDelete(
+          "Delete Class",
+          `Are you sure you want to delete "${name}"? This action cannot be undone.`,
+          () => {
+            VibesDataStore.deleteClass(id);
+            VibesAdmin.toast("Class deleted successfully!");
+            renderClasses();
+          }
+        );
+      };
+
+      if (addBtn) {
+        addBtn.addEventListener('click', () => {
+          form.reset();
+          document.getElementById('class-id').value = '';
+          document.getElementById('class-modal-title').textContent = "Add New Class";
+          modal.style.display = 'flex';
+        });
+      }
+
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+      }
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const clsData = {
+            id: document.getElementById('class-id').value,
+            name: document.getElementById('cls-name').value.trim(),
+            category: document.getElementById('cls-category').value,
+            ageGroup: document.getElementById('cls-age').value.trim(),
+            image: document.getElementById('cls-image').value.trim(),
+            description: document.getElementById('cls-desc').value.trim(),
+            sortOrder: parseInt(document.getElementById('cls-order').value) || 1,
+            status: document.getElementById('cls-status').value
+          };
+
+          VibesDataStore.saveClass(clsData);
+          VibesAdmin.toast("Class saved successfully!");
+          modal.style.display = 'none';
+          renderClasses();
+        });
+      }
+
+      renderClasses();
+    });
+  </script>
+</body>
+</html>

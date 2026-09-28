@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule &amp; Batch Management | VIBES STUDIO Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../../assets/css/vibes-design-system.css">
+</head>
+<body>
+
+  <div id="admin-app-root" data-admin-module="schedule">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h1 class="heading-2" style="margin: 0;">Schedule &amp; Batch Management</h1>
+        <p style="color: var(--brand-muted); margin-top: 4px;">Configure class batches, timings, fees, and seat availability.</p>
+      </div>
+      <button id="btn-add-batch" class="btn btn-primary">+ Add New Batch</button>
+    </div>
+
+    <!-- Table Card -->
+    <div class="table-card">
+      <div class="table-header-bar">
+        <h3 class="table-title">Public Schedule Batches</h3>
+        <div style="font-size: 0.85rem; color: var(--brand-muted);" id="batch-count-label">0 Batches Total</div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Class &amp; Batch Name</th>
+              <th>Days &amp; Timing</th>
+              <th>Fee</th>
+              <th>Availability</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="batches-table-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Add/Edit Batch Modal -->
+    <div class="admin-modal-backdrop" id="batch-modal" style="display: none;">
+      <div class="admin-modal-box">
+        <h3 class="modal-title" id="batch-modal-title">Add New Schedule Batch</h3>
+        
+        <!-- Schedule Conflict Alert Box -->
+        <div id="batch-conflict-warning" style="display: none; padding: 12px 14px; background: rgba(213, 126, 77, 0.15); border: 1px solid var(--brand-orange); color: var(--brand-black); border-radius: 8px; font-size: 0.85rem; font-weight: 600; margin-bottom: 16px;">
+          <!-- Populated dynamically -->
+        </div>
+
+        <form id="batch-form">
+          <input type="hidden" id="batch-id">
+          
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="bth-classname">Class Name *</label>
+              <input type="text" id="bth-classname" class="form-input" placeholder="e.g. Kids Creative Dance" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bth-category">Category *</label>
+              <select id="bth-category" class="form-select" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="dance">DANCE</option>
+                <option value="zumba">ZUMBA</option>
+                <option value="art">ART</option>
+                <option value="tuitions">TUITIONS</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="bth-name">Batch Name *</label>
+            <input type="text" id="bth-name" class="form-input" placeholder="e.g. Junior Beginners Batch" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="bth-age">Age Group</label>
+              <input type="text" id="bth-age" class="form-input" placeholder="e.g. Age 4 – 10 Yrs" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bth-days">Days *</label>
+              <input type="text" id="bth-days" class="form-input" placeholder="e.g. Mon, Wed, Fri" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="bth-start">Start Time *</label>
+              <input type="text" id="bth-start" class="form-input" placeholder="e.g. 4:30 PM" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bth-end">End Time *</label>
+              <input type="text" id="bth-end" class="form-input" placeholder="e.g. 5:30 PM" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="bth-fee">Monthly Fee (₹)</label>
+              <input type="text" id="bth-fee" class="form-input" placeholder="e.g. 1,500 (Leave blank for contact details)" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bth-availability">Availability Status</label>
+              <select id="bth-availability" class="form-select" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="AVAILABLE">AVAILABLE</option>
+                <option value="LIMITED">LIMITED</option>
+                <option value="FULL">FULL</option>
+                <option value="COMING SOON">COMING SOON</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="bth-desc">Batch Description</label>
+            <textarea id="bth-desc" class="form-textarea" rows="2" placeholder="Brief description for public display..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);"></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="bth-order">Display Order</label>
+              <input type="number" id="bth-order" class="form-input" value="1" min="1" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bth-active">Public Visibility</label>
+              <select id="bth-active" class="form-select" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="true">Active (Visible)</option>
+                <option value="false">Inactive (Hidden)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-batch">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Batch</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/vibes-data-store.js"></script>
+  <script src="../../assets/js/vibes-admin-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('batch-modal');
+      const form = document.getElementById('batch-form');
+      const tbody = document.getElementById('batches-table-body');
+      const addBtn = document.getElementById('btn-add-batch');
+      const cancelBtn = document.getElementById('btn-cancel-batch');
+      const conflictWarning = document.getElementById('batch-conflict-warning');
+
+      function checkScheduleConflicts() {
+        if (!conflictWarning) return;
+        const currentId = document.getElementById('batch-id').value;
+        const days = document.getElementById('bth-days').value.trim().toLowerCase();
+        const start = document.getElementById('bth-start').value.trim().toLowerCase();
+        
+        if (!days || !start) {
+          conflictWarning.style.display = 'none';
+          return;
+        }
+
+        const allBatches = VibesDataStore.getBatches();
+        const conflictingBatch = allBatches.find(b => {
+          if (b.id === currentId || !b.isActive) return false;
+          const bDays = (b.days || '').toLowerCase();
+          const bStart = (b.startTime || '').toLowerCase();
+          return (bDays === days || days.includes(bDays) || bDays.includes(days)) && bStart === start;
+        });
+
+        if (conflictingBatch) {
+          conflictWarning.innerHTML = `⚠️ Schedule Conflict Detected: Batch <strong>"${conflictingBatch.batchName}"</strong> (${conflictingBatch.className}) is also scheduled on ${conflictingBatch.days} at ${conflictingBatch.startTime}.`;
+          conflictWarning.style.display = 'block';
+        } else {
+          conflictWarning.style.display = 'none';
+        }
+      }
+
+      ['bth-days', 'bth-start'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', checkScheduleConflicts);
+      });
+
+      function renderBatches() {
+        const batches = VibesDataStore.getBatches().sort((a, b) => a.sortOrder - b.sortOrder);
+        document.getElementById('batch-count-label').textContent = `${batches.length} Batches Total`;
+
+        if (batches.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px;">No schedule batches configured.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = batches.map(b => {
+          let statusClass = 'open';
+          const st = (b.availability || b.status || 'AVAILABLE').toUpperCase();
+          if (st === 'LIMITED' || st === 'FEW SEATS') statusClass = 'few';
+          else if (st === 'FULL') statusClass = 'full';
+          else if (st === 'COMING SOON') statusClass = 'inactive';
+
+          const feeText = (b.monthlyFee && String(b.monthlyFee).trim() !== '' && String(b.monthlyFee).trim() !== '0')
+            ? `₹${String(b.monthlyFee).replace(/^₹\s*/, '')}`
+            : 'Contact';
+
+          return `
+            <tr>
+              <td><strong>#${b.sortOrder}</strong></td>
+              <td>
+                <div style="font-weight: 700; color: var(--brand-black);">${b.className}</div>
+                <div style="font-size: 0.82rem; color: var(--brand-orange); font-weight: 600;">${b.batchName}</div>
+              </td>
+              <td>
+                <div style="font-size: 0.85rem;">${b.days}</div>
+                <div style="font-size: 0.8rem; color: var(--brand-muted);">${b.startTime} – ${b.endTime}</div>
+              </td>
+              <td><strong>${feeText}</strong></td>
+              <td><span class="badge-status badge-${statusClass}">${b.availability || b.status || 'AVAILABLE'}</span></td>
+              <td><span class="badge-status badge-${b.isActive ? 'active' : 'inactive'}">${b.isActive ? 'Active' : 'Inactive'}</span></td>
+              <td>
+                <button class="btn-action-icon" onclick="editBatch('${b.id}')" title="Edit Batch">✏️ Edit</button>
+                <button class="btn-action-icon" onclick="deleteBatchConfirm('${b.id}', '${b.batchName}')" title="Delete Batch">🗑️</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      window.editBatch = function(id) {
+        const bth = VibesDataStore.getBatches().find(b => b.id === id);
+        if (!bth) return;
+        document.getElementById('batch-modal-title').textContent = "Edit Schedule Batch";
+        document.getElementById('batch-id').value = bth.id;
+        document.getElementById('bth-classname').value = bth.className;
+        
+        let primaryCat = "dance";
+        if (Array.isArray(bth.category) && bth.category.length > 0) primaryCat = bth.category[0];
+        else if (typeof bth.category === 'string') primaryCat = bth.category;
+        document.getElementById('bth-category').value = primaryCat;
+
+        document.getElementById('bth-name').value = bth.batchName;
+        document.getElementById('bth-age').value = bth.ageGroup || '';
+        document.getElementById('bth-days').value = bth.days || '';
+        document.getElementById('bth-start').value = bth.startTime || '';
+        document.getElementById('bth-end').value = bth.endTime || '';
+        document.getElementById('bth-fee').value = bth.monthlyFee || '';
+        document.getElementById('bth-availability').value = bth.availability || bth.status || 'AVAILABLE';
+        document.getElementById('bth-desc').value = bth.description || '';
+        document.getElementById('bth-order').value = bth.sortOrder || 1;
+        document.getElementById('bth-active').value = bth.isActive ? "true" : "false";
+        checkScheduleConflicts();
+        modal.style.display = 'flex';
+      };
+
+      window.deleteBatchConfirm = function(id, name) {
+        VibesAdmin.confirmDelete(
+          "Delete Schedule Batch",
+          `Are you sure you want to delete batch "${name}"? This action cannot be undone.`,
+          () => {
+            VibesDataStore.deleteBatch(id);
+            VibesAdmin.toast("Batch deleted successfully!");
+            renderBatches();
+          }
+        );
+      };
+
+      if (addBtn) {
+        addBtn.addEventListener('click', () => {
+          form.reset();
+          document.getElementById('batch-id').value = '';
+          document.getElementById('batch-modal-title').textContent = "Add New Schedule Batch";
+          if (conflictWarning) conflictWarning.style.display = 'none';
+          modal.style.display = 'flex';
+        });
+      }
+
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+      }
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const className = document.getElementById('bth-classname').value.trim();
+          const catVal = document.getElementById('bth-category').value;
+          const feeInput = document.getElementById('bth-fee').value.trim();
+
+          let cleanFee = feeInput;
+          if (cleanFee !== '') {
+            const numFee = parseFloat(cleanFee.replace(/,/g, ''));
+            if (isNaN(numFee) || numFee < 0) {
+              VibesAdmin.toast("Monthly fee must be a valid non-negative number.", "error");
+              return;
+            }
+          }
+
+          const bthData = {
+            id: document.getElementById('batch-id').value,
+            className: className,
+            batchName: document.getElementById('bth-name').value.trim(),
+            category: [catVal],
+            ageGroup: document.getElementById('bth-age').value.trim(),
+            days: document.getElementById('bth-days').value.trim(),
+            startTime: document.getElementById('bth-start').value.trim(),
+            endTime: document.getElementById('bth-end').value.trim(),
+            monthlyFee: cleanFee,
+            availability: document.getElementById('bth-availability').value,
+            status: document.getElementById('bth-availability').value,
+            description: document.getElementById('bth-desc').value.trim(),
+            sortOrder: parseInt(document.getElementById('bth-order').value) || 1,
+            isActive: document.getElementById('bth-active').value === "true"
+          };
+
+          VibesDataStore.saveBatch(bthData);
+          VibesAdmin.toast("Schedule batch saved successfully!");
+          modal.style.display = 'none';
+          renderBatches();
+        });
+      }
+
+      renderBatches();
+    });
+  </script>
+</body>
+</html>

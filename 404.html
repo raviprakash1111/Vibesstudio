@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found | VIBES STUDIO</title>
+  <meta name="robots" content="noindex, follow">
+  <link rel="stylesheet" href="/assets/css/vibes-design-system.css">
+  <style>
+    body {
+      background-color: var(--brand-dark-green);
+      color: var(--brand-white);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+      font-family: var(--font-body);
+    }
+    .error-page-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: var(--space-8) var(--space-4);
+    }
+    .error-card {
+      background-color: var(--brand-white);
+      color: var(--brand-black);
+      border-radius: var(--radius-lg);
+      padding: var(--space-12) var(--space-8);
+      max-width: 520px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--brand-wood);
+    }
+    .error-logo {
+      height: 70px;
+      width: auto;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+      margin-bottom: var(--space-6);
+    }
+    .error-code-badge {
+      display: inline-block;
+      background-color: rgba(213, 126, 77, 0.15);
+      color: var(--brand-orange);
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+      letter-spacing: var(--ls-wide);
+      margin-bottom: var(--space-4);
+    }
+    .error-title {
+      font-family: var(--font-heading);
+      font-size: 1.85rem;
+      color: var(--brand-black);
+      margin: 0 0 var(--space-3);
+    }
+    .error-desc {
+      color: var(--brand-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: var(--space-8);
+    }
+    .error-actions {
+      display: flex;
+      gap: var(--space-4);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="error-page-container">
+    <div class="error-card">
+      <a href="/" aria-label="VIBES STUDIO Homepage">
+        <img src="/assets/brand/vibes-studio-logo-full.png" alt="VIBES STUDIO — Feel the way you move" class="error-logo">
+      </a>
+
+      <div>
+        <span class="error-code-badge">ERROR 404</span>
+        <h1 class="error-title">Page Not Found</h1>
+        <p class="error-desc">
+          The page you are looking for might have been moved, renamed, or is temporarily unavailable. Let’s get you back on track to explore VIBES STUDIO classes and choreography.
+        </p>
+      </div>
+
+      <div class="error-actions">
+        <a href="/" class="btn btn-primary btn-lg">BACK TO HOME</a>
+        <a href="/classes" class="btn btn-secondary btn-lg">EXPLORE CLASSES</a>
+      </div>
+    </div>
+  </div>
+
+  <footer style="background-color: #0A240F; border-top: 1px solid rgba(255,255,255,0.1); padding: var(--space-6) 0; text-align: center; font-size: 0.85rem; color: var(--brand-wood);">
+    <div class="container">
+      © 2026 VIBES STUDIO. Aganampudi, Visakhapatnam, Andhra Pradesh.
+    </div>
+  </footer>
+
+  <script src="/assets/js/vibes-data-store.js"></script>
+  <script src="/assets/js/vibes-design-system.js"></script>
+</body>
+</html>

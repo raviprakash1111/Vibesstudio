@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Services &amp; Choreography Management | VIBES STUDIO Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../../assets/css/vibes-design-system.css">
+</head>
+<body>
+
+  <div id="admin-app-root" data-admin-module="services">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h1 class="heading-2" style="margin: 0;">Choreography &amp; Event Services</h1>
+        <p style="color: var(--brand-muted); margin-top: 4px;">Manage Sangeeth, Pre-Wedding, Corporate, Birthday, and Workshop services.</p>
+      </div>
+      <button id="btn-add-service" class="btn btn-primary">+ Add New Service</button>
+    </div>
+
+    <!-- Table Card -->
+    <div class="table-card">
+      <div class="table-header-bar">
+        <h3 class="table-title">Choreography &amp; Event Offerings</h3>
+        <div style="font-size: 0.85rem; color: var(--brand-muted);" id="service-count-label">0 Services Total</div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Service Name</th>
+              <th>Category</th>
+              <th>Short Description</th>
+              <th>CTA Button Text</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="services-table-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Add/Edit Service Modal -->
+    <div class="admin-modal-backdrop" id="service-modal" style="display: none;">
+      <div class="admin-modal-box">
+        <h3 class="modal-title" id="service-modal-title">Add New Service</h3>
+        <form id="service-form">
+          <input type="hidden" id="service-id">
+          
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="srv-name">Service Name *</label>
+            <input type="text" id="srv-name" class="form-input" placeholder="e.g. Sangeeth Choreography" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="srv-category">Category *</label>
+            <select id="srv-category" class="form-select" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+              <option value="Choreography">Choreography</option>
+              <option value="Events">Events</option>
+              <option value="Workshops">Workshops</option>
+              <option value="Performances">Performances</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="srv-shortdesc">Short Description</label>
+            <input type="text" id="srv-shortdesc" class="form-input" placeholder="Brief tagline..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="srv-detdesc">Detailed Description</label>
+            <textarea id="srv-detdesc" class="form-textarea" rows="3" placeholder="Full service details..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);"></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="srv-image">Image URL</label>
+              <input type="text" id="srv-image" class="form-input" placeholder="assets/images/event-sangeeth.png" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="srv-cta">CTA Text</label>
+              <input type="text" id="srv-cta" class="form-input" placeholder="Enquire Now" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="srv-order">Display Order</label>
+              <input type="number" id="srv-order" class="form-input" value="1" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="srv-active">Status</label>
+              <select id="srv-active" class="form-select" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="true">Active (Visible)</option>
+                <option value="false">Inactive (Hidden)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-service">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Service</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/vibes-data-store.js"></script>
+  <script src="../../assets/js/vibes-admin-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('service-modal');
+      const form = document.getElementById('service-form');
+      const tbody = document.getElementById('services-table-body');
+      const addBtn = document.getElementById('btn-add-service');
+      const cancelBtn = document.getElementById('btn-cancel-service');
+
+      function renderServices() {
+        const services = VibesDataStore.getServices().sort((a, b) => a.sortOrder - b.sortOrder);
+        document.getElementById('service-count-label').textContent = `${services.length} Services Total`;
+
+        if (services.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px;">No services configured.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = services.map(s => `
+          <tr>
+            <td><strong>#${s.sortOrder}</strong></td>
+            <td><strong>${s.name}</strong></td>
+            <td><span class="badge-status badge-few">${s.category}</span></td>
+            <td>${s.shortDesc}</td>
+            <td><code>${s.ctaText || 'Enquire Now'}</code></td>
+            <td><span class="badge-status badge-${s.isActive ? 'active' : 'inactive'}">${s.isActive ? 'Active' : 'Inactive'}</span></td>
+            <td>
+              <button class="btn-action-icon" onclick="editService('${s.id}')" title="Edit Service">✏️ Edit</button>
+              <button class="btn-action-icon" onclick="deleteServiceConfirm('${s.id}', '${s.name}')" title="Delete Service">🗑️</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      window.editService = function(id) {
+        const srv = VibesDataStore.getServices().find(s => s.id === id);
+        if (!srv) return;
+        document.getElementById('service-modal-title').textContent = "Edit Service";
+        document.getElementById('service-id').value = srv.id;
+        document.getElementById('srv-name').value = srv.name;
+        document.getElementById('srv-category').value = srv.category;
+        document.getElementById('srv-shortdesc').value = srv.shortDesc;
+        document.getElementById('srv-detdesc').value = srv.detailedDesc;
+        document.getElementById('srv-image').value = srv.image;
+        document.getElementById('srv-cta').value = srv.ctaText || 'Enquire Now';
+        document.getElementById('srv-order').value = srv.sortOrder;
+        document.getElementById('srv-active').value = srv.isActive ? "true" : "false";
+        modal.style.display = 'flex';
+      };
+
+      window.deleteServiceConfirm = function(id, name) {
+        VibesAdmin.confirmDelete(
+          "Delete Service",
+          `Are you sure you want to delete service "${name}"? This action cannot be undone.`,
+          () => {
+            VibesDataStore.deleteService(id);
+            VibesAdmin.toast("Service deleted successfully!");
+            renderServices();
+          }
+        );
+      };
+
+      if (addBtn) {
+        addBtn.addEventListener('click', () => {
+          form.reset();
+          document.getElementById('service-id').value = '';
+          document.getElementById('service-modal-title').textContent = "Add New Service";
+          modal.style.display = 'flex';
+        });
+      }
+
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+      }
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const srvData = {
+            id: document.getElementById('service-id').value,
+            name: document.getElementById('srv-name').value.trim(),
+            category: document.getElementById('srv-category').value,
+            shortDesc: document.getElementById('srv-shortdesc').value.trim(),
+            detailedDesc: document.getElementById('srv-detdesc').value.trim(),
+            image: document.getElementById('srv-image').value.trim(),
+            ctaText: document.getElementById('srv-cta').value.trim(),
+            sortOrder: parseInt(document.getElementById('srv-order').value) || 1,
+            isActive: document.getElementById('srv-active').value === "true"
+          };
+
+          VibesDataStore.saveService(srvData);
+          VibesAdmin.toast("Service saved successfully!");
+          modal.style.display = 'none';
+          renderServices();
+        });
+      }
+
+      renderServices();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+# VIBES STUDIO — Official Robots.txt
+User-agent: *
+Allow: /
+
+# Prevent indexing of private, admin, login, or development resources
+Disallow: /admin/
+Disallow: /login/
+Disallow: /dashboard/
+Disallow: /draft/
+Disallow: /test/
+Disallow: /dev/
+Disallow: /.git/
+
+# Sitemap location
+Sitemap: https://vibesstudio.com/sitemap.xml

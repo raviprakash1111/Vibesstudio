@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events &amp; Workshops Management | VIBES STUDIO Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../../assets/css/vibes-design-system.css">
+</head>
+<body>
+
+  <div id="admin-app-root" data-admin-module="events">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); flex-wrap: wrap; gap: 12px;">
+      <div>
+        <h1 class="heading-2" style="margin: 0;">Events &amp; Workshops Management</h1>
+        <p style="color: var(--brand-muted); margin-top: 4px;">Schedule masterclasses, workshops, and studio event performances.</p>
+      </div>
+      <button id="btn-add-event" class="btn btn-primary">+ Add New Event</button>
+    </div>
+
+    <!-- Table Card -->
+    <div class="table-card">
+      <div class="table-header-bar">
+        <h3 class="table-title">Events List</h3>
+        <div style="font-size: 0.85rem; color: var(--brand-muted);" id="event-count-label">0 Events Total</div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Event Name</th>
+              <th>Type</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Published State</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="events-table-body">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Add/Edit Event Modal -->
+    <div class="admin-modal-backdrop" id="event-modal" style="display: none;">
+      <div class="admin-modal-box">
+        <h3 class="modal-title" id="event-modal-title">Add New Event</h3>
+        <form id="event-form">
+          <input type="hidden" id="event-id">
+          
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="evt-name">Event Name *</label>
+            <input type="text" id="evt-name" class="form-input" placeholder="e.g. Hip-Hop Intensive Masterclass" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="evt-type">Event Type *</label>
+              <select id="evt-type" class="form-select" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="Workshop">Workshop</option>
+                <option value="Event">Event</option>
+                <option value="Performance">Performance</option>
+                <option value="Masterclass">Masterclass</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="evt-date">Date *</label>
+              <input type="date" id="evt-date" class="form-input" required style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="evt-start">Start Time</label>
+              <input type="text" id="evt-start" class="form-input" placeholder="e.g. 10:00 AM" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="evt-end">End Time</label>
+              <input type="text" id="evt-end" class="form-input" placeholder="e.g. 1:00 PM" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="evt-location">Location</label>
+            <input type="text" id="evt-location" class="form-input" placeholder="e.g. VIBES STUDIO, Aganampudi, Visakhapatnam" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="evt-desc">Description</label>
+            <textarea id="evt-desc" class="form-textarea" rows="3" placeholder="Event details..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);"></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="evt-image">Featured Image URL</label>
+              <input type="text" id="evt-image" class="form-input" placeholder="assets/images/gallery-workshop.png" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="evt-reg">Registration Link</label>
+              <input type="text" id="evt-reg" class="form-input" placeholder="https://wa.me/919876543210" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="form-label" for="evt-status">Event Status</label>
+              <select id="evt-status" class="form-select" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="Upcoming">Upcoming</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="evt-active">Published Visibility</label>
+              <select id="evt-active" class="form-select" style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--brand-wood);">
+                <option value="true">Active (Published Publicly)</option>
+                <option value="false">Inactive (Draft / Hidden)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" id="btn-cancel-event">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Event</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../assets/js/vibes-data-store.js"></script>
+  <script src="../../assets/js/vibes-admin-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('event-modal');
+      const form = document.getElementById('event-form');
+      const tbody = document.getElementById('events-table-body');
+      const addBtn = document.getElementById('btn-add-event');
+      const cancelBtn = document.getElementById('btn-cancel-event');
+
+      function renderEvents() {
+        const events = VibesDataStore.getEvents();
+        document.getElementById('event-count-label').textContent = `${events.length} Events Total`;
+
+        if (events.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 20px;">No events scheduled.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = events.map(e => `
+          <tr>
+            <td><strong>${e.date}</strong></td>
+            <td>
+              <div style="font-weight: 700; color: var(--brand-black);">${e.name}</div>
+              <div style="font-size: 0.8rem; color: var(--brand-muted);">${e.startTime || ''} ${e.endTime ? '– ' + e.endTime : ''}</div>
+            </td>
+            <td><span class="badge-status badge-few">${e.eventType}</span></td>
+            <td>${e.location}</td>
+            <td><span class="badge-status badge-${e.eventStatus === 'Upcoming' ? 'upcoming' : e.eventStatus === 'Completed' ? 'converted' : 'closed'}">${e.eventStatus}</span></td>
+            <td><span class="badge-status badge-${e.isActive ? 'active' : 'inactive'}">${e.isActive ? 'Published' : 'Hidden'}</span></td>
+            <td>
+              <button class="btn-action-icon" onclick="editEvent('${e.id}')" title="Edit Event">✏️ Edit</button>
+              <button class="btn-action-icon" onclick="deleteEventConfirm('${e.id}', '${e.name}')" title="Delete Event">🗑️</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      window.editEvent = function(id) {
+        const evt = VibesDataStore.getEvents().find(e => e.id === id);
+        if (!evt) return;
+        document.getElementById('event-modal-title').textContent = "Edit Event";
+        document.getElementById('event-id').value = evt.id;
+        document.getElementById('evt-name').value = evt.name;
+        document.getElementById('evt-type').value = evt.eventType;
+        document.getElementById('evt-date').value = evt.date;
+        document.getElementById('evt-start').value = evt.startTime || '';
+        document.getElementById('evt-end').value = evt.endTime || '';
+        document.getElementById('evt-location').value = evt.location || '';
+        document.getElementById('evt-desc').value = evt.description || '';
+        document.getElementById('evt-image').value = evt.image || '';
+        document.getElementById('evt-reg').value = evt.registrationLink || '';
+        document.getElementById('evt-status').value = evt.eventStatus || 'Upcoming';
+        document.getElementById('evt-active').value = evt.isActive ? "true" : "false";
+        modal.style.display = 'flex';
+      };
+
+      window.deleteEventConfirm = function(id, name) {
+        VibesAdmin.confirmDelete(
+          "Delete Event",
+          `Are you sure you want to delete event "${name}"? This action cannot be undone.`,
+          () => {
+            VibesDataStore.deleteEvent(id);
+            VibesAdmin.toast("Event deleted successfully!");
+            renderEvents();
+          }
+        );
+      };
+
+      if (addBtn) {
+        addBtn.addEventListener('click', () => {
+          form.reset();
+          document.getElementById('event-id').value = '';
+          document.getElementById('evt-date').value = new Date().toISOString().split('T')[0];
+          document.getElementById('event-modal-title').textContent = "Add New Event";
+          modal.style.display = 'flex';
+        });
+      }
+
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+      }
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const evtData = {
+            id: document.getElementById('event-id').value,
+            name: document.getElementById('evt-name').value.trim(),
+            eventType: document.getElementById('evt-type').value,
+            date: document.getElementById('evt-date').value,
+            startTime: document.getElementById('evt-start').value.trim(),
+            endTime: document.getElementById('evt-end').value.trim(),
+            location: document.getElementById('evt-location').value.trim(),
+            description: document.getElementById('evt-desc').value.trim(),
+            image: document.getElementById('evt-image').value.trim(),
+            registrationLink: document.getElementById('evt-reg').value.trim(),
+            eventStatus: document.getElementById('evt-status').value,
+            isActive: document.getElementById('evt-active').value === "true"
+          };
+
+          VibesDataStore.saveEvent(evtData);
+          VibesAdmin.toast("Event saved successfully!");
+          modal.style.display = 'none';
+          renderEvents();
+        });
+      }
+
+      renderEvents();
+    });
+  </script>
+</body>
+</html>

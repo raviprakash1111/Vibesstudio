@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | VIBES STUDIO</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="../assets/css/vibes-design-system.css">
+</head>
+<body>
+
+  <div id="admin-app-root" data-admin-module="dashboard">
+    <!-- Dashboard Header & KPI Grid -->
+    <div style="margin-bottom: var(--space-6);">
+      <h1 class="heading-2" style="margin: 0;">Studio Content Overview</h1>
+      <p style="color: var(--brand-muted); margin-top: 4px;">Welcome back to VIBES STUDIO Management Panel.</p>
+    </div>
+
+    <!-- 6 Overview KPI Cards -->
+    <div class="admin-kpi-grid">
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-val" id="kpi-classes">0</div>
+          <div class="kpi-label">Active Classes</div>
+        </div>
+        <div class="kpi-icon">💃</div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-val" id="kpi-batches">0</div>
+          <div class="kpi-label">Active Batches</div>
+        </div>
+        <div class="kpi-icon">📅</div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-val" id="kpi-events">0</div>
+          <div class="kpi-label">Upcoming Events</div>
+        </div>
+        <div class="kpi-icon">🎪</div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-val" id="kpi-enquiries">0</div>
+          <div class="kpi-label">New Enquiries</div>
+        </div>
+        <div class="kpi-icon">📩</div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-val" id="kpi-gallery">0</div>
+          <div class="kpi-label">Gallery Items</div>
+        </div>
+        <div class="kpi-icon">🖼️</div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <div class="kpi-val" id="kpi-testimonials">0</div>
+          <div class="kpi-label">Testimonials</div>
+        </div>
+        <div class="kpi-icon">💬</div>
+      </div>
+    </div>
+
+    <!-- Quick Action Bar -->
+    <div class="table-card" style="padding: var(--space-6); margin-bottom: var(--space-8); background-color: #FAF6F0;">
+      <h3 style="margin: 0 0 12px; font-size: 1.05rem;">Quick Management Actions</h3>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="./schedule" class="btn btn-primary btn-sm">+ Add New Batch</a>
+        <a href="./enquiries" class="btn btn-secondary btn-sm">📩 View Enquiries Inbox</a>
+        <a href="./gallery" class="btn btn-secondary btn-sm">📷 Add Gallery Media</a>
+        <a href="./testimonials" class="btn btn-secondary btn-sm">💬 Approve Testimonials</a>
+        <a href="./settings/contact" class="btn btn-secondary btn-sm">📞 Update Contact Info</a>
+      </div>
+    </div>
+
+    <!-- Recent Enquiries Section -->
+    <div class="table-card">
+      <div class="table-header-bar">
+        <h3 class="table-title">Recent Customer Enquiries</h3>
+        <a href="./enquiries" class="btn btn-secondary btn-sm">View All Inbox →</a>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-data-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Customer Name</th>
+              <th>Phone</th>
+              <th>Interested In</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="dash-enquiries-list">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/vibes-data-store.js"></script>
+  <script src="../assets/js/vibes-admin-core.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Populate KPI Counters
+      const classes = VibesDataStore.getClasses();
+      const batches = VibesDataStore.getBatches();
+      const events = VibesDataStore.getEvents();
+      const enquiries = VibesDataStore.getEnquiries();
+      const gallery = VibesDataStore.getGallery();
+      const testimonials = VibesDataStore.getTestimonials();
+
+      document.getElementById('kpi-classes').textContent = classes.filter(c => c.status === 'ACTIVE').length;
+      document.getElementById('kpi-batches').textContent = batches.filter(b => b.isActive).length;
+      document.getElementById('kpi-events').textContent = events.filter(e => e.isActive && e.eventStatus === 'Upcoming').length;
+      document.getElementById('kpi-enquiries').textContent = enquiries.filter(e => e.status === 'NEW').length;
+      document.getElementById('kpi-gallery').textContent = gallery.filter(g => g.isActive).length;
+      document.getElementById('kpi-testimonials').textContent = testimonials.filter(t => t.active).length;
+
+      // Render Recent Enquiries
+      const listElem = document.getElementById('dash-enquiries-list');
+      if (listElem) {
+        if (enquiries.length === 0) {
+          listElem.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">No enquiries received yet.</td></tr>`;
+        } else {
+          listElem.innerHTML = enquiries.slice(0, 5).map(e => `
+            <tr>
+              <td style="font-size: 0.85rem; white-space: nowrap;">${e.date}</td>
+              <td><strong>${e.name}</strong></td>
+              <td>${e.phone}</td>
+              <td><span class="badge-status badge-few">${e.interestedIn}</span></td>
+              <td><span class="badge-status badge-${e.status.toLowerCase()}">${e.status}</span></td>
+              <td>
+                <a href="./enquiries" class="btn-action-icon" title="Manage Enquiry">👁️ View</a>
+              </td>
+            </tr>
+          `).join('');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
