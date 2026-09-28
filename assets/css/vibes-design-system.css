@@ -1,0 +1,508 @@
+/* ==========================================================================
+   VIBES STUDIO — OFFICIAL DESIGN SYSTEM & MASTER BRAND COLOR TOKENS
+   Tagline: "Feel the way you move"
+   Identity: Physical Studio Identity (Orange Wall + Green Wall + Black Logo + Wood Floor)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. GOOGLE FONTS IMPORT
+   - Headings: 'Montserrat' (Geometric, Bold, Uppercase matching logo typography)
+   - Tagline: 'Caveat' (Fluid, expressive cursive script matching logo tagline)
+   - Body: 'Inter' (Clean, modern, high-legibility geometric sans-serif)
+   -------------------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap');
+
+:root {
+  /* ==========================================================================
+     EXACT BRAND COLOR TOKENS (PHYSICAL STUDIO MASTER PALETTE)
+     ========================================================================== */
+  --brand-orange: #D57E4D;       /* Studio Orange — Energy, Dance & Action */
+  --brand-orange-hover: #C36B3B;
+  --brand-green: #266127;        /* Studio Green — Studio, Balance & Support */
+  --brand-green-hover: #1D4C1E;
+  --brand-dark-green: #103A18;   /* Studio Dark Green — Dark Hero, Footer & Cinematic */
+  --brand-black: #111111;        /* Studio Black — Exact Logo & Major Headings */
+  --brand-cream: #F7F2EA;        /* Studio Cream — Main Background & Warm Space */
+  --brand-wood: #C8B8A4;         /* Studio Wood — Cards, Borders & Accents */
+  --brand-white: #FFFFFF;        /* Clean White — Cards & Dark-Section Text */
+  --brand-muted: #6B6B63;        /* Muted Gray — Secondary Text & Metadata */
+
+  /* ==========================================================================
+     SEMANTIC COLOR TOKENS
+     ========================================================================== */
+  --primary: var(--brand-orange);
+  --primary-hover: var(--brand-orange-hover);
+  --secondary: var(--brand-green);
+  --secondary-hover: var(--brand-green-hover);
+  --accent: var(--brand-orange);
+  
+  --background: var(--brand-cream);
+  --foreground: var(--brand-black);
+  --muted: var(--brand-muted);
+  --border: var(--brand-wood);
+  --card: var(--brand-white);
+  --dark-section: var(--brand-dark-green);
+
+  /* Semantic State Mapping */
+  --bg-primary: var(--brand-cream);
+  --bg-secondary: #EFE8DC;
+  --bg-tertiary: var(--brand-wood);
+  --bg-elevated: var(--brand-white);
+  --bg-surface-glass: rgba(247, 242, 234, 0.9);
+  
+  --text-primary: var(--brand-black);
+  --text-secondary: var(--brand-muted);
+  --text-muted: var(--brand-muted);
+  --text-inverse: var(--brand-white);
+  --text-accent: var(--brand-orange);
+
+  --border-color-light: rgba(200, 184, 164, 0.4);
+  --border-color-medium: var(--brand-wood);
+  --border-color-accent: var(--brand-orange);
+
+  /* ==========================================================================
+     TYPOGRAPHY TOKENS
+     ========================================================================== */
+  --font-heading: 'Montserrat', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-tagline: 'Caveat', cursive, sans-serif;
+
+  /* Font Sizes (Fluid Clamp System) */
+  --text-display: clamp(2.75rem, 5vw + 1rem, 4.25rem);
+  --text-h1: clamp(2.25rem, 4vw + 0.5rem, 3.25rem);
+  --text-h2: clamp(1.75rem, 3vw + 0.25rem, 2.35rem);
+  --text-h3: clamp(1.35rem, 2vw + 0.2rem, 1.7rem);
+  --text-h4: clamp(1.15rem, 1.5vw, 1.3rem);
+  --text-body-lg: 1.125rem;
+  --text-body-base: 1rem;
+  --text-body-sm: 0.875rem;
+  --text-caption: 0.75rem;
+
+  /* Line Heights */
+  --lh-tight: 1.15;
+  --lh-heading: 1.22;
+  --lh-body: 1.6;
+
+  /* Letter Spacing */
+  --ls-tight: -0.02em;
+  --ls-normal: 0em;
+  --ls-wide: 0.04em;
+  --ls-widest: 0.1em;
+
+  /* ==========================================================================
+     BORDER RADIUS TOKENS
+     ========================================================================== */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* ==========================================================================
+     SHADOW & ELEVATION TOKENS
+     ========================================================================== */
+  --shadow-sm: 0 2px 4px rgba(17, 17, 17, 0.04);
+  --shadow-md: 0 8px 20px -4px rgba(17, 17, 17, 0.08), 0 4px 8px -2px rgba(17, 17, 17, 0.04);
+  --shadow-lg: 0 20px 35px -10px rgba(17, 17, 17, 0.12);
+  --shadow-hover: 0 20px 40px -10px rgba(213, 126, 77, 0.2);
+  --shadow-accent-glow: 0 8px 25px rgba(213, 126, 77, 0.35);
+
+  /* ==========================================================================
+     SPACING SYSTEM (4px Base Grid)
+     ========================================================================== */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+  --space-20: 5rem;    /* 80px */
+  --space-24: 6rem;    /* 96px */
+
+  --container-max-width: 1280px;
+
+  /* ==========================================================================
+     ANIMATION & TRANSITION PRINCIPLES
+     ========================================================================== */
+  --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+
+  --transition-fast: all var(--duration-fast) var(--ease-snappy);
+  --transition-normal: all var(--duration-normal) var(--ease-snappy);
+  --transition-slow: all var(--duration-slow) var(--ease-snappy);
+}
+
+/* ==========================================================================
+   DARK SECTION SPECIAL ENVIRONMENT
+   ========================================================================== */
+.dark-section-env {
+  background-color: var(--brand-dark-green) !important;
+  color: var(--brand-white) !important;
+}
+
+.dark-section-env h1,
+.dark-section-env h2,
+.dark-section-env h3,
+.dark-section-env h4 {
+  color: var(--brand-white) !important;
+}
+
+.dark-section-env .body-small,
+.dark-section-env p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ==========================================================================
+   RESET & CORE STYLES
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--brand-black);
+  background-color: var(--brand-cream);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  line-height: var(--lh-body);
+  background-color: var(--brand-cream);
+}
+
+/* ==========================================================================
+   TYPOGRAPHY PRESETS
+   ========================================================================== */
+h1, h2, h3, h4, .font-heading {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-tight);
+  color: var(--brand-black);
+  text-transform: uppercase;
+}
+
+.heading-display {
+  font-size: var(--text-display);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+h1, .heading-1 { font-size: var(--text-h1); }
+h2, .heading-2 { font-size: var(--text-h2); }
+h3, .heading-3 { font-size: var(--text-h3); }
+h4, .heading-4 { font-size: var(--text-h4); font-weight: 700; }
+
+.font-tagline {
+  font-family: var(--font-tagline);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--brand-orange);
+  text-transform: none;
+  letter-spacing: 0.01em;
+}
+
+.body-large {
+  font-size: var(--text-body-lg);
+  line-height: 1.65;
+}
+
+.body-small {
+  font-size: var(--text-body-sm);
+  color: var(--brand-muted);
+}
+
+/* ==========================================================================
+   LOGO USAGE RULES & CSS HELPERS
+   Exact uploaded logo rendering without alteration
+   ========================================================================== */
+.vibes-logo-header {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.vibes-logo-header img {
+  height: 52px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
+.vibes-logo-footer img {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
+.logo-on-light {
+  mix-blend-mode: multiply;
+}
+
+.logo-on-dark-container {
+  background-color: #FFFFFF;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  display: inline-block;
+}
+
+.vibes-icon-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--brand-white);
+  border: 1px solid var(--brand-wood);
+  overflow: hidden;
+}
+
+.vibes-icon-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   BUTTON STYLES
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  padding: 0.875rem 1.75rem;
+  border-radius: var(--radius-full);
+  border: 2px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition-normal);
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Primary CTA — Studio Orange #D57E4D */
+.btn-primary {
+  background-color: var(--brand-orange);
+  color: var(--brand-white);
+  box-shadow: var(--shadow-accent-glow);
+}
+
+.btn-primary:hover {
+  background-color: var(--brand-orange-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(213, 126, 77, 0.45);
+}
+
+/* Secondary CTA — Studio Green #266127 */
+.btn-secondary {
+  background-color: var(--brand-green);
+  color: var(--brand-white);
+}
+
+.btn-secondary:hover {
+  background-color: var(--brand-green-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(38, 97, 39, 0.3);
+}
+
+/* Outlined CTA — Wood Frame */
+.btn-outline {
+  background-color: transparent;
+  color: var(--brand-black);
+  border-color: var(--brand-black);
+}
+
+.btn-outline:hover {
+  background-color: var(--brand-black);
+  color: var(--brand-white);
+  transform: translateY(-2px);
+}
+
+.btn-sm {
+  padding: 0.6rem 1.25rem;
+  font-size: 0.75rem;
+}
+
+.btn-lg {
+  padding: 1.125rem 2.25rem;
+  font-size: 1rem;
+}
+
+/* ==========================================================================
+   CARD STYLES
+   ========================================================================== */
+.vibe-card {
+  background-color: var(--brand-white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--brand-wood);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+
+.vibe-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--brand-orange);
+}
+
+.vibe-card-image {
+  width: 100%;
+  height: 220px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: var(--space-5);
+  background-color: var(--brand-cream);
+}
+
+.vibe-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-snappy);
+}
+
+.vibe-card:hover .vibe-card-image img {
+  transform: scale(1.06);
+}
+
+.vibe-card-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: var(--brand-green);
+  color: var(--brand-white);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: var(--ls-wide);
+  text-transform: uppercase;
+}
+
+.vibe-card-title {
+  font-size: var(--text-h3);
+  margin-bottom: var(--space-2);
+  color: var(--brand-black);
+}
+
+.vibe-card-desc {
+  color: var(--brand-muted);
+  font-size: var(--text-body-sm);
+  margin-bottom: var(--space-5);
+  flex-grow: 1;
+}
+
+.vibe-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--brand-wood);
+}
+
+/* ==========================================================================
+   NAVIGATION TREATMENT
+   ========================================================================== */
+.vibes-header-treatment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: var(--brand-white);
+  border: 1px solid var(--brand-wood);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.vibes-nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  list-style: none;
+}
+
+.vibes-nav-link {
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-wide);
+  color: var(--brand-black);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-smooth);
+  position: relative;
+}
+
+.vibes-nav-link.active,
+.vibes-nav-link:hover {
+  color: var(--brand-orange);
+}
+
+.vibes-nav-link.active::after,
+.vibes-nav-link:hover::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--brand-orange);
+}
+
+/* ==========================================================================
+   UTILITY & LAYOUT CONTAINERS
+   ========================================================================== */
+.container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+}
+
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
+
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+
+@media (max-width: 1024px) {
+  .grid-4, .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .vibes-header-treatment { padding: 0.875rem 1rem; }
+  .vibes-nav-links { display: none; }
+}

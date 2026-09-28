@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIBES STUDIO — Master Brand Color System (Step 1A)</title>
+  <meta name="description" content="Official Master Brand Color System & Design Board for VIBES STUDIO based on the physical studio identity.">
+  
+  <!-- Design System CSS -->
+  <link rel="stylesheet" href="assets/css/vibes-design-system.css">
+  
+  <style>
+    .system-banner {
+      background: linear-gradient(135deg, var(--brand-dark-green) 0%, #0A240F 100%);
+      color: var(--brand-white);
+      padding: var(--space-12) 0;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 4px solid var(--brand-orange);
+    }
+
+    .system-section {
+      padding: var(--space-12) 0;
+      border-bottom: 1px solid var(--brand-wood);
+    }
+
+    .section-badge {
+      display: inline-block;
+      background-color: rgba(213, 126, 77, 0.15);
+      color: var(--brand-orange);
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 4px 14px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: var(--ls-wide);
+      margin-bottom: var(--space-3);
+    }
+
+    .color-swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--space-6);
+    }
+
+    .color-swatch-card {
+      background: var(--brand-white);
+      border: 1px solid var(--brand-wood);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition-normal);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .color-swatch-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--brand-orange);
+    }
+
+    .color-swatch-preview {
+      height: 110px;
+      width: 100%;
+      position: relative;
+    }
+
+    .color-swatch-info {
+      padding: var(--space-5);
+    }
+
+    .color-swatch-name {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+      color: var(--brand-black);
+    }
+
+    .color-swatch-codes {
+      font-size: 0.8rem;
+      color: var(--brand-muted);
+      font-family: monospace;
+      margin-bottom: 8px;
+    }
+
+    .color-swatch-usage {
+      font-size: 0.85rem;
+      color: var(--brand-black);
+      line-height: 1.4;
+      border-top: 1px dashed var(--brand-wood);
+      padding-top: 8px;
+    }
+
+    .spec-card {
+      background: var(--brand-white);
+      border: 1px solid var(--brand-wood);
+      border-radius: var(--radius-md);
+      padding: var(--space-6);
+    }
+
+    .spec-label {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: var(--ls-wide);
+      color: var(--brand-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .ratio-bar {
+      height: 24px;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      display: flex;
+      margin: var(--space-4) 0;
+    }
+
+    .ratio-segment {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Master System Header Banner -->
+  <header class="system-banner">
+    <div class="container">
+      <div class="flex-between" style="flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <span class="section-badge" style="background: rgba(213, 126, 77, 0.25); color: #D57E4D;">STEP 1A — PHYSICAL STUDIO IDENTITY</span>
+          <h1 class="heading-display" style="color: #FFFFFF; margin-top: 8px;">VIBES STUDIO</h1>
+          <p class="font-tagline" style="color: #D57E4D; font-size: 1.85rem; margin-top: 4px;">“Feel the way you move”</p>
+          <p style="color: rgba(255, 255, 255, 0.85); margin-top: var(--space-3); max-width: 680px;">
+            Master Brand Color System built directly from the real physical studio identity: <strong>Studio Orange feature wall + Studio Green feature wall + Studio Black logo + Warm Wood flooring + Studio Cream surroundings</strong>.
+          </p>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius-md); padding: 16px 24px;">
+          <div style="color: #D57E4D; font-size: 11px; font-weight: 800; text-transform: uppercase;">Logo Authority</div>
+          <img src="assets/images/vibes-studio-logo-full.jpg" alt="VIBES STUDIO Logo" style="height: 48px; background: white; padding: 4px 12px; border-radius: 6px; margin-top: 8px;">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================================================
+         SECTION 1: LOGO AUTHORITY & PHYSICAL IDENTITY CONNECTION
+         ========================================================================== -->
+    <section class="system-section">
+      <div class="container">
+        <span class="section-badge">Brand Authority</span>
+        <h2 class="heading-2">1. Exact Logo & Physical Studio Identity</h2>
+        <p class="body-large" style="color: var(--brand-muted); margin-bottom: var(--space-8);">
+          The VIBES STUDIO website visual identity directly reflects the physical studio atmosphere. The uploaded logo is preserved 100% unchanged.
+        </p>
+
+        <div class="grid-2">
+          <div class="spec-card">
+            <div class="spec-label">Logo Asset Authority</div>
+            <div style="text-align: center; padding: var(--space-6); background: var(--brand-cream); border-radius: var(--radius-md); border: 1px solid var(--brand-wood);">
+              <img src="assets/images/vibes-studio-logo-full.jpg" alt="VIBES STUDIO Logo" style="max-height: 90px; mix-blend-mode: multiply;">
+            </div>
+            <p style="font-size: 0.85rem; color: var(--brand-muted); margin-top: var(--space-4);">
+              <strong>STRICT COMPLIANCE:</strong> Preserves exact typography, dancer silhouette, lettering, proportions, and tagline script without recoloring, stylizing, or modifying.
+            </p>
+          </div>
+
+          <div class="spec-card">
+            <div class="spec-label">Physical Studio Identity Connection</div>
+            <div style="display: flex; gap: var(--space-3); margin-top: var(--space-4);">
+              <div style="flex: 1; background: #D57E4D; color: white; padding: 16px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 0.85rem;">
+                ORANGE WALL<br><span style="font-weight: 400; font-size: 11px;">#D57E4D (Energy)</span>
+              </div>
+              <div style="flex: 1; background: #266127; color: white; padding: 16px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 0.85rem;">
+                GREEN WALL<br><span style="font-weight: 400; font-size: 11px;">#266127 (Balance)</span>
+              </div>
+              <div style="flex: 1; background: #C8B8A4; color: #111; padding: 16px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 0.85rem;">
+                WOOD FLOOR<br><span style="font-weight: 400; font-size: 11px;">#C8B8A4 (Warmth)</span>
+              </div>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--brand-muted); margin-top: var(--space-4);">
+              The website creates an immediate visual connection: ORANGE WALL + GREEN WALL + BLACK LOGO + WOOD FLOOR. No random purple, blue, pink or neon gradients.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 2: FINAL BRAND COLOR BOARD
+         ========================================================================== -->
+    <section class="system-section">
+      <div class="container">
+        <span class="section-badge">Master Color Board</span>
+        <h2 class="heading-2">2. Official VIBES STUDIO Color Palette</h2>
+        <p class="body-large" style="color: var(--brand-muted); margin-bottom: var(--space-6);">
+          Click any color card to copy HEX code. Derived directly from physical studio feature walls and identity assets.
+        </p>
+
+        <!-- Visual Proportion Guidance Bar -->
+        <div class="spec-card" style="margin-bottom: var(--space-8);">
+          <div class="spec-label">Master Color Ratio Philosophy</div>
+          <div class="ratio-bar">
+            <div class="ratio-segment" style="width: 65%; background: #F7F2EA; color: #111111;">65% Cream & White Surface</div>
+            <div class="ratio-segment" style="width: 25%; background: #266127;">25% Studio Green & Dark Green</div>
+            <div class="ratio-segment" style="width: 10%; background: #D57E4D;">10% Orange Action</div>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--brand-muted);">
+            <strong>Rule:</strong> Cream & white create spacious warmth. Green grounds sections and categories. Orange commands action and active focus.
+          </p>
+        </div>
+
+        <div class="color-swatch-grid">
+          <!-- 1. Studio Orange -->
+          <div class="color-swatch-card" data-color="#D57E4D">
+            <div class="color-swatch-preview" style="background-color: #D57E4D;"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Studio Orange</div>
+              <div class="color-swatch-codes">HEX: #D57E4D • RGB(213, 126, 77)</div>
+              <div class="color-swatch-usage">
+                <strong>Primary Action / CTA:</strong> Active buttons, selected nav states, promotional highlights, dance energy details.
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Studio Green -->
+          <div class="color-swatch-card" data-color="#266127">
+            <div class="color-swatch-preview" style="background-color: #266127;"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Studio Green</div>
+              <div class="color-swatch-codes">HEX: #266127 • RGB(38, 97, 39)</div>
+              <div class="color-swatch-usage">
+                <strong>Secondary Accent:</strong> Category badges, secondary CTAs, section highlights, interactive support.
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Studio Dark Green -->
+          <div class="color-swatch-card" data-color="#103A18">
+            <div class="color-swatch-preview" style="background-color: #103A18;"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Studio Dark Green</div>
+              <div class="color-swatch-codes">HEX: #103A18 • RGB(16, 58, 24)</div>
+              <div class="color-swatch-usage">
+                <strong>Dark Environment:</strong> Premium dark hero sections, footer background, cinematic contrast zones.
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Studio Black -->
+          <div class="color-swatch-card" data-color="#111111">
+            <div class="color-swatch-preview" style="background-color: #111111;"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Studio Black</div>
+              <div class="color-swatch-codes">HEX: #111111 • RGB(17, 17, 17)</div>
+              <div class="color-swatch-usage">
+                <strong>Logo & Headings:</strong> Exact VIBES STUDIO logo, primary headers, high-contrast typography.
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Studio Cream -->
+          <div class="color-swatch-card" data-color="#F7F2EA">
+            <div class="color-swatch-preview" style="background-color: #F7F2EA; border-bottom: 1px solid var(--brand-wood);"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Studio Cream</div>
+              <div class="color-swatch-codes">HEX: #F7F2EA • RGB(247, 242, 234)</div>
+              <div class="color-swatch-usage">
+                <strong>Light Background:</strong> Main page canvas, content sections, spacious negative-space areas.
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Studio Wood -->
+          <div class="color-swatch-card" data-color="#C8B8A4">
+            <div class="color-swatch-preview" style="background-color: #C8B8A4;"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Studio Wood</div>
+              <div class="color-swatch-codes">HEX: #C8B8A4 • RGB(200, 184, 164)</div>
+              <div class="color-swatch-usage">
+                <strong>Supporting Neutral:</strong> Card borders, dividers, subtle frames, warm studio floor accents.
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Clean White -->
+          <div class="color-swatch-card" data-color="#FFFFFF">
+            <div class="color-swatch-preview" style="background-color: #FFFFFF; border-bottom: 1px solid var(--brand-wood);"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Clean White</div>
+              <div class="color-swatch-codes">HEX: #FFFFFF • RGB(255, 255, 255)</div>
+              <div class="color-swatch-usage">
+                <strong>Clean Content:</strong> Cards, containers, body text on Dark Green backgrounds.
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. Studio Muted Gray -->
+          <div class="color-swatch-card" data-color="#6B6B63">
+            <div class="color-swatch-preview" style="background-color: #6B6B63;"></div>
+            <div class="color-swatch-info">
+              <div class="color-swatch-name">Muted Gray</div>
+              <div class="color-swatch-codes">HEX: #6B6B63 • RGB(107, 107, 99)</div>
+              <div class="color-swatch-usage">
+                <strong>Supporting Text:</strong> Secondary descriptions, captions, schedule metadata.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 3: MANDATORY UI COMPONENT EXAMPLES
+         ========================================================================== -->
+    <section class="system-section">
+      <div class="container">
+        <span class="section-badge">UI Component Examples</span>
+        <h2 class="heading-2">3. Master Color UI Examples</h2>
+        <p class="body-large" style="color: var(--brand-muted); margin-bottom: var(--space-8);">
+          Demonstrating exact brand color application across buttons, navigation, cards, dark section, class card, and footer.
+        </p>
+
+        <!-- Example 1: CTAs & Buttons -->
+        <div style="margin-bottom: var(--space-10);">
+          <div class="spec-label">1. Primary & Secondary CTA Buttons</div>
+          <div style="display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap; margin-top: var(--space-3);">
+            <button class="btn btn-primary">Primary CTA (#D57E4D Studio Orange)</button>
+            <button class="btn btn-secondary">Secondary CTA (#266127 Studio Green)</button>
+            <button class="btn btn-outline">Outlined Frame (#111111 Black)</button>
+          </div>
+        </div>
+
+        <!-- Example 2: Navigation Bar -->
+        <div style="margin-bottom: var(--space-10);">
+          <div class="spec-label">2. Header Navigation Treatment</div>
+          <div class="vibes-header-treatment">
+            <a href="#" class="vibes-logo-header">
+              <img src="assets/images/vibes-studio-logo-full.jpg" alt="VIBES STUDIO">
+            </a>
+
+            <ul class="vibes-nav-links">
+              <li><a href="#" class="vibes-nav-link active">Home</a></li>
+              <li><a href="#" class="vibes-nav-link">Classes</a></li>
+              <li><a href="#" class="vibes-nav-link">Schedule</a></li>
+              <li><a href="#" class="vibes-nav-link">Instructors</a></li>
+              <li><a href="#" class="vibes-nav-link">Contact</a></li>
+            </ul>
+
+            <div>
+              <a href="#" class="btn btn-primary btn-sm">Book Class</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Example 3 & 4: Light Card & Class Card -->
+        <div class="grid-2" style="margin-bottom: var(--space-10);">
+          <!-- Light Card Example -->
+          <div>
+            <div class="spec-label">3. Light Card Treatment</div>
+            <div class="spec-card">
+              <span class="section-badge" style="background: rgba(38, 97, 39, 0.12); color: #266127;">Studio Balance</span>
+              <h3 style="font-size: 1.35rem; margin-top: 8px;">INSPIRED PHYSICAL SPACE</h3>
+              <p class="font-tagline" style="font-size: 1.25rem;">“Feel the way you move”</p>
+              <p style="color: var(--brand-muted); margin-top: var(--space-3); font-size: 0.9rem;">
+                Clean White card surface (<code>#FFFFFF</code>) bordered with warm Studio Wood (<code>#C8B8A4</code>) on a Studio Cream canvas (<code>#F7F2EA</code>).
+              </p>
+              <div style="margin-top: var(--space-5);">
+                <button class="btn btn-secondary btn-sm">Learn Studio Rules</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Class Card Example -->
+          <div>
+            <div class="spec-label">4. Class Card Example</div>
+            <div class="vibe-card">
+              <div class="vibe-card-image">
+                <img src="assets/images/physical-studio-preview.png" alt="Physical Studio Dance Class">
+                <span class="vibe-card-badge">Studio Green Badge</span>
+              </div>
+              <h3 class="vibe-card-title">HIP-HOP CHOREOGRAPHY</h3>
+              <p class="vibe-card-desc">
+                High energy training in our physical studio space with Studio Orange and Deep Green feature walls.
+              </p>
+              <div class="vibe-card-footer">
+                <div>
+                  <span style="font-size: 0.75rem; color: var(--brand-muted); display: block;">Schedule</span>
+                  <strong style="font-size: 0.85rem;">Tue & Thu • 6:30 PM</strong>
+                </div>
+                <a href="#" class="btn btn-primary btn-sm">Join Class</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Example 5: Dark Section Example -->
+        <div style="margin-bottom: var(--space-10);">
+          <div class="spec-label">5. Dark Section (#103A18 Studio Dark Green)</div>
+          <div class="dark-section-env" style="padding: var(--space-8); border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,0.1);">
+            <div class="flex-between" style="flex-wrap: wrap; gap: var(--space-6);">
+              <div>
+                <span class="section-badge" style="background: rgba(213, 126, 77, 0.25); color: #D57E4D;">Premium Dark Environment</span>
+                <h2 class="heading-2" style="margin-top: 8px;">CINEMATIC STAGE EXPERIENCE</h2>
+                <p class="font-tagline" style="color: #D57E4D; margin-top: 4px;">“Feel the way you move”</p>
+                <p style="margin-top: var(--space-4); max-width: 550px;">
+                  Using <code>#103A18</code> Studio Dark Green as the primary dark section background ensures a rich, premium studio feel instead of generic pure black.
+                </p>
+              </div>
+
+              <div>
+                <button class="btn btn-primary">Book Studio Session</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Example 6: Footer Example -->
+  <footer class="dark-section-env" style="padding: var(--space-12) 0; border-top: 3px solid var(--brand-orange);">
+    <div class="container">
+      <div class="flex-between" style="flex-wrap: wrap; gap: var(--space-6);">
+        <div>
+          <div class="logo-on-dark-container">
+            <img src="assets/images/vibes-studio-logo-full.jpg" alt="VIBES STUDIO Logo" style="height: 54px; mix-blend-mode: multiply;">
+          </div>
+          <p class="font-tagline" style="color: #D57E4D; margin-top: 12px; font-size: 1.5rem;">“Feel the way you move”</p>
+        </div>
+
+        <div style="text-align: right; color: rgba(255, 255, 255, 0.8); font-size: 0.875rem;">
+          <p style="font-weight: 700; color: #FFFFFF;">VIBES STUDIO — Official Brand System</p>
+          <p style="margin-top: 4px; color: var(--brand-wood);">Orange Wall + Green Wall + Black Logo + Wood Floor</p>
+          <p style="margin-top: 8px; font-size: 0.75rem;">Step 1A Master Color Board Complete.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Design System JS -->
+  <script src="assets/js/vibes-design-system.js"></script>
+</body>
+</html>
